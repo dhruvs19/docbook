@@ -54,7 +54,7 @@
                         </li>
                         <li><a href="reviews.html">Reviews</a>
                         </li>
-                        <li><a href="doctor-register.html">Doctor Register</a>
+                        <li><a href="{% url 'authuser:register_url' %}">Doctor Register</a>
                         </li>
                     </ul>
                 </li>
@@ -130,7 +130,7 @@
                 </li>
                 <li><a href="login.html">Login</a>
                 </li>
-                <li><a href="register.html">Register</a>
+                <li><a href="{% url 'authuser:register_url' %}">Register</a>
                 </li>
                 <li><a href="forgot-password.html">Forgot Password</a>
                 </li>
