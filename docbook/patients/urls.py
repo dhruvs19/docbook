@@ -6,6 +6,5 @@ from django.conf import settings
 app_name = 'patients'
 
 urlpatterns = [
-    path('profile/', views.PatientProfile),
-    path('register/', views.PatientRegister)
+    path('profile/', views.PatientProfile)
 ]
