@@ -23,8 +23,8 @@ class Patients(models.Model):
     FirstName   = models.CharField(max_length = 65)
     LastName    = models.CharField(max_length = 65)
     Address     = models.CharField(max_length = 200)
-    PhoneNumber = models.IntegerField()
-    DOB         = models.DateField()
+    PhoneNumber = models.CharField(max_length = 200)
+    DOB         = models.CharField(max_length = 200)
     BloodGroup  = models.CharField(max_length = 5)
 
     def __str__(self):

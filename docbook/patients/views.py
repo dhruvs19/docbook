@@ -1,28 +1,42 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from docbook import patients
-
-from docbook.patients.form import PatientFormset
-from docbook.patients.models import Patients
+from patients.models import Patients
 
 # Create your views here.
 def PatientProfile(request):
     return render(request, 'patients/profile.html')
 
 
+def testProfile(request):
+    return render(request, 'patients/test.html')
+
+
+def testViewProfile(request):
+    profiles = Patients.objects.all()
+    stu = {
+        "profile_number": profiles
+    }
+    return render(request, 'patients/testView.html', stu)
+
+
 def savePatient(request):
-    form = PatientsForm()
-    book_formset = PatientFormset(instance = Patients())
+    if request.method=="POST":   
+        FirstName   = request.POST['FirstName']
+        LastName    = request.POST['LastName']
+        Address     = request.POST['Address']
+        PhoneNumber = request.POST['PhoneNumber']
+        DOB         = request.POST['DOB']
+        BloodGroup  = request.POST['BloodGroup']
 
-    if request.POST:
-        form = PatientsForm(request.POST)
-        if form.is_valid():
-            patients = form.save()
-            book_formset = PatientFormset(request.POST, instance = Patients)
-            if book_formset.is_valid():
-                book_formset.save()
-            return redirect('/index/')
+        patient_data = Patients.objects.create(  
+        FirstName   = FirstName  ,
+        LastName    = LastName  , 
+        Address     = Address    ,
+        PhoneNumber = PhoneNumber,
+        DOB         = DOB   ,     
+        BloodGroup  = BloodGroup )
 
-    return render_to_response('addbook.html',{
-        'form': form, 'formset': book_formset
-    },context_instance=RequestContext(request))  
+        patient_data.save()
+        return render(request, 'patients/test.html')
+    else:
+        return render(request,'test.html') 
