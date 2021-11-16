@@ -9,5 +9,5 @@ urlpatterns = [
     path('profile/', views.PatientProfile),
     path('test/', views.testProfile),
     path('test/savePatient', views.savePatient),
-    path('testView/', views.testViewProfile)
+    path('testView/', views.testViewProfile)  
 ]
