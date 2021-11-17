@@ -2,7 +2,6 @@ from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import User
-from django.forms import ModelForm
 
 # Create your models here.
 
@@ -17,8 +16,3 @@ class Patients(models.Model):
 
     def __str__(self):
         return self.UserID.username
-
-class PatientsForm(ModelForm):
-    class Meta:
-        model = Patients
-        fields = ['FirstName', 'LastName', 'Address', 'PhoneNumber', 'DOB', 'BloodGroup']

@@ -1,42 +1,36 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from patients.models import Patients
+from django.views.generic import View, TemplateView
+from django.template.response import TemplateResponse
+from django.shortcuts import redirect, render, reverse
+from django.contrib import messages
+from .forms import PatientsForm
 
-# Create your views here.
-def PatientProfile(request):
-    return render(request, 'patients/profile.html')
+# Create your views here
+# 
+class PatientProfile(View):
+    template_name = 'patients/profile.html'
+    
+    def get(self, *args, **kwargs):
+        return redirect(reverse("patients:patient_profile_url"))
 
+class ProfileSettings(View):
+    template_name = "patients/profile-settings.html"
 
-def testProfile(request):
-    return render(request, 'patients/test.html')
+    # get request to register page
+    def get(self, *args, **kwargs):
+        context={
+            "body_class":"profile-page",
+            "patient_form":PatientsForm()}
+        return(TemplateResponse(self.request, self.template_name, context))
 
-
-def testViewProfile(request):
-    profiles = Patients.objects.all()
-    stu = {
-        "profile_number": profiles
-    }
-    return render(request, 'patients/testView.html', stu)
-
-
-def savePatient(request):
-    if request.method=="POST":   
-        FirstName   = request.POST['FirstName']
-        LastName    = request.POST['LastName']
-        Address     = request.POST['Address']
-        PhoneNumber = request.POST['PhoneNumber']
-        DOB         = request.POST['DOB']
-        BloodGroup  = request.POST['BloodGroup']
-
-        patient_data = Patients.objects.create(  
-        FirstName   = FirstName  ,
-        LastName    = LastName  , 
-        Address     = Address    ,
-        PhoneNumber = PhoneNumber,
-        DOB         = DOB   ,     
-        BloodGroup  = BloodGroup )
-
-        patient_data.save()
-        return render(request, 'patients/test.html')
-    else:
-        return render(request,'test.html') 
+    def post(self, *args, **kwargs):
+            form = PatientsForm(self.request.POST)
+            if form.is_valid():
+                patient = form.save()
+                messages.success(self.request, "Profile Saved!" )
+                return redirect("patients:patient_profile_url")
+            context={
+                    "body_class":"account-page",
+                    "register_form":form}
+            messages.error(self.request, "Unsuccessful registration. Invalid information.")
+            return(TemplateResponse(self.request, self.template_name, context))
+        
