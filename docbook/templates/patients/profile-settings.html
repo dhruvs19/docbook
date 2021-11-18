@@ -121,6 +121,7 @@
 		<div class="card">
 		<div class="card-body">
 
+			{{context}}
 			<form method="post">
 				{% csrf_token %}
 				{% if patient_form.non_field_errors %}
@@ -148,8 +149,7 @@
 						</div>
 					</div>
 				{% endfor %}  
-				<button class="btn btn-primary w-100 btn-lg login-btn"
-					type="submit">Save</button>
+				<button class="btn btn-primary w-100 btn-lg login-btn" type="submit">Save</button>
 			</form>
 
 		</div>

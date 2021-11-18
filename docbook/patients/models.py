@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Patients(models.Model):
-    UserID      = models.ForeignKey(User, on_delete = CASCADE, unique = True)
+    UserID      = models.ForeignKey(User, on_delete = CASCADE, unique = True, primary_key = True)
     FirstName   = models.CharField(max_length = 65)
     LastName    = models.CharField(max_length = 65)
     Address     = models.CharField(max_length = 200)

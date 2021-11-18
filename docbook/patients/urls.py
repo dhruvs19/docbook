@@ -6,6 +6,6 @@ from .views  import *
 app_name = 'patients'
 
 urlpatterns = [
-    path('profile/', PatientProfile.as_view(), name = "patient_profile_url"),
+    path('profile-list/', PatientProfileList.as_view(), name = "patient_profilelist_url"),
     path('profile-settings/', ProfileSettings.as_view(), name = "profile_settings_url")
 ]

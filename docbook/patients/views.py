@@ -3,34 +3,40 @@ from django.template.response import TemplateResponse
 from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
 from .forms import PatientsForm
+from .models import Patients
 
 # Create your views here
 # 
-class PatientProfile(View):
-    template_name = 'patients/profile.html'
+class PatientProfileList(View):
+    template_name = 'patients/profilelist.html'
     
     def get(self, *args, **kwargs):
-        return redirect(reverse("patients:patient_profile_url"))
+         return(TemplateResponse(self.request, self.template_name))
 
 class ProfileSettings(View):
     template_name = "patients/profile-settings.html"
 
-    # get request to register page
+    # get request to ProfileSettings page
     def get(self, *args, **kwargs):
-        context={
-            "body_class":"profile-page",
-            "patient_form":PatientsForm()}
-        return(TemplateResponse(self.request, self.template_name, context))
+        if self.request.user.is_authenticated:
+            patient_row = Patients.objects.get(UserID = self.request.user)
+            context={
+                "body_class":"profile-page",
+                "patient_form":PatientsForm(instance = patient_row)}
+            return(TemplateResponse(self.request, self.template_name, context))
+        else:   
+            return redirect(reverse("core:home"))
 
     def post(self, *args, **kwargs):
-            form = PatientsForm(self.request.POST)
-            if form.is_valid():
-                patient = form.save()
-                messages.success(self.request, "Profile Saved!" )
-                return redirect("patients:patient_profile_url")
-            context={
-                    "body_class":"account-page",
-                    "register_form":form}
-            messages.error(self.request, "Unsuccessful registration. Invalid information.")
-            return(TemplateResponse(self.request, self.template_name, context))
+        patient_row = Patients.objects.get(UserID = self.request.user)
+        form = PatientsForm(self.request.POST, instance =  patient_row)
+        if form.is_valid():
+            form.save()
+            messages.success(self.request, "Profile Saved!" )
+        else:
+            messages.error(self.request, "Unsuccessful updation!. Invalid information.")
+        context={
+            "body_class":"profile-settings",
+            "patient_form":form}
+        return(TemplateResponse(self.request, self.template_name, context))
         

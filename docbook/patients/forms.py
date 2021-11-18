@@ -7,6 +7,7 @@ from .models import Patients
 
 class PatientsForm(ModelForm):
     GROUPS = (
+        ('','Blood Group'),
         ('A+', 'A+'),
         ('A-', 'A-'),
         ('B+', 'B+'),
@@ -21,18 +22,16 @@ class PatientsForm(ModelForm):
     class Meta:
         model = Patients
         fields = ['FirstName', 'LastName', 'Address', 'PhoneNumber', 'DOB', 'BloodGroup']
+        
     
     def __init__(self, *args, **kwargs):
         super(PatientsForm, self).__init__(*args, **kwargs)
+            
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control floating'
 
             if visible.field.widget.input_type == "select":
                 visible.field.widget.attrs['class'] = "form-select form-control floating"
     
-    def save(self, commit=True):
-        patient = super(PatientsForm, self).save(commit=False)
-        if commit:
-            patient.save()
-        return patient
+
         
