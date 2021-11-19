@@ -1,9 +1,19 @@
-
+from os import name
 from django.urls import path
-from . import views
+from django.conf import settings
+from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
+
+app_name = 'patients'
 urlpatterns = [
-    path('',views.DocRegisterView,name="doctor-register"),
-    path('doctor-register-step1/',views.DocRegisterView1,name="doctor-register-step1"),
-    path('doctor-register-step1/profile_submit',views.profile_submit,name="profile_submit")
+
+    path('', Profile_submit.as_view(), name="doctor-register")
+
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

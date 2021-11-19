@@ -18,10 +18,14 @@ from django.urls import path, include
 from . import settings
 from django.conf.urls.static import static
 
+
+
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', include('core.urls', namespace='core')),
-    path('doctor-register/', include('doctor.urls')),
+    path('doctor/', include('doctor.urls')),
     path('account/', include('authuser.urls', namespace='authuser'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+                             

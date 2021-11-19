@@ -1,28 +1,39 @@
-from django.shortcuts import render,redirect
-from .models import *
-def DocRegisterView(request):
-    return render(request,"doctor-register.html")
-
-def DocRegisterView1(request):
-    return render(request,"step1.html")
-
-def profile_submit(request):
-    if request.method=="POST":
-        profile_image=request.POST['profile_image']    
-        gender=request.POST['gender']  
-        reg_clinic_address=request.POST['address']  
-        pincode=request.POST['zipcode']  
-        age=request.POST['age']  
-        bio = request.POST['bio']  
-        qualification =request.POST['qualification']  
-        mobile =request.POST['mobile']  
-        profile_data=DocProfile.objects.create(profile_image=profile_image,gender=gender,reg_clinic_address=reg_clinic_address,pincode=pincode,age=age,bio=bio,qualification=qualification,mobile=mobile)
-        profile_data.save()
-        return redirect('/')
-    else:
-        return render(request,'step1.html')    
+from django.views.generic import View, TemplateView
+from django.template.response import TemplateResponse
+from django.shortcuts import redirect, render, reverse
+from django.contrib import messages
+from .forms import DocProfileForm
+from .models import DocProfile
 
 
-    
+class Profile_submit(View):
+    template_name = "doctor/step1.html"
 
-    
+    def get(self, *args, **kwargs):
+
+        if self.request.user.is_authenticated:
+
+            doctor_row = DocProfile.objects.get(UserID=self.request.user)
+            context = {
+                "body_class": "profile-page",
+                "doctor_form": DocProfileForm(instance=doctor_row)}
+            return(TemplateResponse(self.request, self.template_name, context))
+        else:
+            return redirect(reverse("core:home"))
+
+    def post(self, *args, **kwargs):
+        doctor_row = DocProfile.objects.get(UserID=self.request.user)
+        form = DocProfileForm(self.request.POST, instance=doctor_row)
+        if form.is_valid():
+            form.save()
+            img_object = form.instance
+            messages.success(self.request, "Profile Saved!")
+        else:
+            messages.error(
+                self.request, "Unsuccessful updation!. Invalid information.")
+        context = {
+            "body_class": "profile-settings",
+            "doctor_form": form,
+            "img_object": img_object,
+        }
+        return(TemplateResponse(self.request, self.template_name, context))
