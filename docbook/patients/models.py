@@ -7,11 +7,12 @@ from django.contrib.auth.models import User
 
 class Patients(models.Model):
     UserID      = models.ForeignKey(User, on_delete = CASCADE, unique = True, primary_key = True)
+    ProfilePicture = models.ImageField(upload_to = './static/img/patients/')
     FirstName   = models.CharField(max_length = 65)
     LastName    = models.CharField(max_length = 65)
     Address     = models.CharField(max_length = 200)
     PhoneNumber = models.CharField(max_length = 200)
-    DOB         = models.DateField()
+    DOB         = models.DateField(null = True)
     BloodGroup  = models.CharField(max_length = 5)
 
     def __str__(self):

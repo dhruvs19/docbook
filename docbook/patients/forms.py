@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import TextInput
 from django.contrib.auth.models import User
-from django.forms import ModelForm
+from django.forms import ModelForm, widgets, DateField
 from .models import Patients
 
 
@@ -17,11 +17,14 @@ class PatientsForm(ModelForm):
         ('AB+', 'AB+'),
         ('AB-', 'AB-'),
     )
-    BloodGroup = forms.ChoiceField(required=True, choices = GROUPS)
-
+    BloodGroup  = forms.ChoiceField(required=True, choices = GROUPS)
     class Meta:
         model = Patients
-        fields = ['FirstName', 'LastName', 'Address', 'PhoneNumber', 'DOB', 'BloodGroup']
+        fields = ['ProfilePicture', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'DOB', 'BloodGroup']
+        widgets = { 
+            'DOB': widgets.DateInput(attrs = { 'type': 'date' }),
+            'ProfilePicture': widgets.FileInput(),
+        }
         
     
     def __init__(self, *args, **kwargs):
