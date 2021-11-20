@@ -50,24 +50,27 @@
                         <li><a href="reviews.html">Reviews</a>
                         </li>
                         <li><a href="doctor/">Doctor Register</a>
+                        <li><a href="{% url 'authuser:register_url' %}">Register</a>
                         </li>
                     </ul>
                 </li>
                 <li class="has-submenu"> <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li class="has-submenu"> <a href="#">Doctors</a>
+                        <!-- <li class="has-submenu"> <a href="#">Doctors</a>
                             <ul class="submenu">
                                 <li><a href="map-grid.html">Map Grid</a>
                                 </li>
                                 <li><a href="map-list.html">Map List</a>
                                 </li>
                             </ul>
+                        </li> -->
+                        <!-- <li><a href="search.html">Search Doctor</a>
+                        </li> -->
+                        <li><a href="/patients/profile/">Profile</a>
                         </li>
-                        <li><a href="search.html">Search Doctor</a>
+                        <li><a href="/patients/register/">Register</a>
                         </li>
-                        <li><a href="doctor-profile.html">Doctor Profile</a>
-                        </li>
-                        <li><a href="booking.html">Booking</a>
+                        <!-- <li><a href="booking.html">Booking</a>
                         </li>
                         <li><a href="checkout.html">Checkout</a>
                         </li>
@@ -82,7 +85,7 @@
                         <li><a href="profile-settings.html">Profile Settings</a>
                         </li>
                         <li><a href="change-password.html">Change Password</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
                 <li class="has-submenu">
@@ -125,7 +128,7 @@
                 </li>
                 <li><a href="login.html">Login</a>
                 </li>
-                <li><a href="register.html">Register</a>
+                <li><a href="{% url 'authuser:register_url' %}">Register</a>
                 </li>
                 <li><a href="forgot-password.html">Forgot Password</a>
                 </li>
