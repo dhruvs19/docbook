@@ -28,7 +28,7 @@ class ProfileSettings(View):
 
     def post(self, *args, **kwargs):
         patient_row = Patients.objects.get(UserID = self.request.user)
-        form = PatientsForm(self.request.POST, instance =  patient_row)
+        form = PatientsForm(self.request.POST, self.request.FILES, instance =  patient_row)
         if form.is_valid():
             form.save()
             messages.success(self.request, "Profile Saved!" )
