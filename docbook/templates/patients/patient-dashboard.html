@@ -25,27 +25,12 @@
         <div class="row">
 
             <!-- side bar  -->
-            <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
-                <div class="profile-sidebar">
-                    <div class="widget-profile pro-widget-content">
-                        <div class="profile-info-widget">
-                            <a href="#" class="booking-doc-img">
-                                <img src="/media/{{patient_details.ProfilePicture}}" alt="User Image">
-                            </a>
-                            <div class="profile-det-info">
-                                <h3>{{patient_details.FirstName}} {{patient_details.LastName}}</h3>
-                                <div class="patient-details">
-                                    <h5><i class="fas fa-birthday-cake"></i> {{patient_details.DOB}}, {{patient_age}} years</h5> 
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            {% include 'patients/side_bar.html' %}
             <!-- side bar ends -->
 
+            
             <div class="col-md-7 col-lg-8 col-xl-9">
+                <!-- personal information -->
                 <div class="card">
                     <div class="card-body pt-0">
                         <div class="row">
@@ -76,10 +61,19 @@
                             <div class="col-md-3">Contact</div>
                             <div class="col-md-3">{{patient_details.PhoneNumber}}</div>
                         </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-3">Blood Group</div>
+                            <div class="col-md-3">{{patient_details.BloodGroup}}</div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-5 align-items-right appointments-link book" ><a href="/appointments/book-appointment/"><button class="btn btn-info">Book Appointment</button></a></div>
+                            <div class="col-md-5 align-items-left appointments-link new" ><a href="/appointments/"><button class="btn btn-success">View Appointments</button></a></div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="card">
+                
+                <!-- personal information ends -->
+                <!-- <div class="card">
                     <div class="card-body pt-0">
 
                         <nav class="user-tabs mb-4">
@@ -1158,7 +1152,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

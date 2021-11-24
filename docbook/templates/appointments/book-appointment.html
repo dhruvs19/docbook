@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="breadcrumb-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-12 col-12">
+                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="">Book Appointment</a></li>
+                    </ol>
+                </nav>
+                <h2 class="breadcrumb-title">Book Appointment</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- side bar  -->
+            <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                <div class="profile-sidebar">
+                    <div class="widget-profile pro-widget-content">
+                        <div class="profile-info-widget">
+                            <a href="#" class="booking-doc-img">
+                                <img src="/media/{{patient_image}}" alt="User Image">
+                            </a>
+                            <div class="profile-det-info">
+                                <h3>{{patient_name}}</h3>
+                                <div class="patient-details">
+                                    <h5><i class="fas fa-birthday-cake"></i> {{patient_dob}}, {{patient_age}} years</h5> 
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- side bar ends -->
+            
+            <!-- form begins -->
+            <div class="col-md-4 col-lg-8 col-xl-9">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Book Your Appointment</h3>
+                        {{context}}
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% if BookAppointmentForm.non_field_errors %}
+                            <div class="alert alert-danger mt-3" role="alert">
+                                {% for error in BookAppointmentForm.non_field_errors %}
+                                <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% for field in BookAppointmentForm.visible_fields %}
+                                <div class="form-field">
+                                    <div class="form-group {% if field.field.widget.input_type != 'select' %}form-focus{% endif %}">
+                                        {{field}}
+                                        {% if field.field.widget.input_type != "select" %}
+                                            <label class="focus-label">{{field.label}}</label>
+                                        {% endif %}
+                                    </div>
+                                    <div class="field_info">
+                                        {% if field.help_text %}
+                                            <small style="color: grey"><em>{{ field.help_text }}</em></small>
+                                        {% endif %}
+                                        {% for error in field.errors %}
+                                            <p style="color: red">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}  
+                            <button class="btn btn-primary w-100 btn-lg" type="submit">Save</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- form ends -->
+            
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

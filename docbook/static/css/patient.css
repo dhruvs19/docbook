@@ -1,3 +1,19 @@
 .patient-info-row{
     margin:10px;
 }
+
+.appointments-link{ 
+    color: #ffffff;
+}
+
+.appointments-link button{ 
+    color: #ffffff;
+}
+
+.appointments-link.book{
+    text-align: right;
+}
+
+.appointments-link.new{
+    text-align: left;
+}

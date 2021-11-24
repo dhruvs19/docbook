@@ -3,9 +3,8 @@ from django.urls import path
 from django.conf import settings
 from .views  import *
 
-app_name = 'patients'
+app_name = 'appointments'
 
 urlpatterns = [
-    path('patient-dashboard/', PatientDashboard.as_view(), name = "patient_dashboard_url"),
-    path('profile-settings/', ProfileSettings.as_view(), name = "profile_settings_url")
+    path('book-appointment/', BookAppointment.as_view(), name = "book_appointment_url")
 ]
