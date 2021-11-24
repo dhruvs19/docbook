@@ -5,8 +5,7 @@ from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
-
-app_name = 'patients'
+app_name = 'doctor'
 urlpatterns = [
 
     path('', Profile_submit.as_view(), name="doctor-register")
