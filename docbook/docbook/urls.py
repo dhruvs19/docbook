@@ -19,7 +19,12 @@ from . import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     path('', include('core.urls', namespace='core')),
-    path('account/', include('authuser.urls', namespace='authuser'))
+    path('doctor/', include('doctor.urls')),
+    path('account/', include('authuser.urls', namespace='authuser')),
+    path('patients/', include('patients.urls', namespace='patientprofile')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+                             
