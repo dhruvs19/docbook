@@ -7,14 +7,7 @@ from doctor.models import DocProfile
 
 
 class BookAppointmentForm(ModelForm):
-    # doctor_objs = DocProfile.objects.all()
 
-    # DOCLIST = [('','Select Doctor')]
-    # for each_obj in doctor_objs:
-    #     # add specilisation later
-    #     doc_tuple = (each_obj.UserID_id, "Dr. "+each_obj.name)
-    #     DOCLIST.append(doc_tuple)
-    # DoctorUser  = forms.ChoiceField(required=True, choices = tuple(DOCLIST))
     class Meta:
         model = Appointments
         fields = ['AppointmentDate', 'DoctorUser']

@@ -30,7 +30,11 @@ class ProfileSettings(View):
             messages.success(self.request, "Profile Saved!" )
         else:
             messages.error(self.request, "Unsuccessful updation!. Invalid information.")
-        context={"patient_form":form}
+        patient_row = Patients.objects.get(UserID = self.request.user)
+        context={
+            "patient_form":PatientsForm(instance = patient_row),
+            "patient_details":patient_row,
+            "patient_age": Patients.calculate_age(patient_row.DOB)}
         return(TemplateResponse(self.request, self.template_name, context))
 
 class PatientDashboard(View):
