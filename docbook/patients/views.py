@@ -4,14 +4,8 @@ from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
 from .forms import PatientsForm
 from .models import Patients
+import datetime
 
-# Create your views here
-# 
-class PatientProfileList(View):
-    template_name = 'patients/profilelist.html'
-    
-    def get(self, *args, **kwargs):
-         return(TemplateResponse(self.request, self.template_name))
 
 class ProfileSettings(View):
     template_name = "patients/profile-settings.html"
@@ -21,22 +15,39 @@ class ProfileSettings(View):
         if self.request.user.is_authenticated:
             patient_row = Patients.objects.get(UserID = self.request.user)
             context={
-                "body_class":"profile-page",
-                "patient_form":PatientsForm(instance = patient_row)}
+                "patient_form":PatientsForm(instance = patient_row),
+                "patient_details":patient_row,
+                "patient_age": Patients.calculate_age(patient_row.DOB)}
             return(TemplateResponse(self.request, self.template_name, context))
         else:   
             return redirect(reverse("core:home"))
 
     def post(self, *args, **kwargs):
         patient_row = Patients.objects.get(UserID = self.request.user)
-        form = PatientsForm(self.request.POST, instance =  patient_row)
+        form = PatientsForm(self.request.POST, self.request.FILES, instance =  patient_row)
         if form.is_valid():
             form.save()
             messages.success(self.request, "Profile Saved!" )
         else:
             messages.error(self.request, "Unsuccessful updation!. Invalid information.")
+        patient_row = Patients.objects.get(UserID = self.request.user)
         context={
-            "body_class":"profile-settings",
-            "patient_form":form}
+            "patient_form":PatientsForm(instance = patient_row),
+            "patient_details":patient_row,
+            "patient_age": Patients.calculate_age(patient_row.DOB)}
         return(TemplateResponse(self.request, self.template_name, context))
-        
+
+class PatientDashboard(View):
+    template_name = "patients/patient-dashboard.html"
+
+    # get request to patient-dashboard page
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            patient_row = Patients.objects.get(UserID = self.request.user)
+            context = {
+                "patient_details":patient_row,
+                "patient_age": Patients.calculate_age(patient_row.DOB) }
+            
+            return(TemplateResponse(self.request, self.template_name, context))
+        else:   
+            return redirect(reverse("core:home"))

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static '/css/doctor.css' %}">
+
+<body>
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+        <div class="row align-items-center">
+        <div class="col-md-12 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+
+        </nav>
+        <h2 class="breadcrumb-title">Profile Settings</h2>
+        </div>
+        </div>
+        </div>
+        </div>
+
+
+        <div class="content">
+        <div class="container-fluid">
+        <div class="row">
+        <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+
+        <div class="profile-sidebar">
+        <div class="widget-profile pro-widget-content">
+        <div class="profile-info-widget">
+        <a href="#" class="booking-doc-img">
+            <img src="{{ user.profile_image.url }}" alt="User Image">
+        </a>
+        <div class="profile-det-info">
+        <h3>{{ user.name }}</h3>
+        <h5><i>{{ user.bio }}</i></h5>
+
+        <div class="patient-details">
+        <h5 class="mb-0">{{ user.qualification }}[{{ user.specialization }}]</h5>
+
+        </div>
+        </div>
+        </div>
+        </div>
+
+
+        <!-- side bar  -->
+        {% include 'doctor/sidebar.html' %}
+        <!-- side bar ends -->
+
+
+
+        </div>
+
+        </div>
+        <div class="col-md-7 col-lg-8 col-xl-9">
+
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        <div class="col-md-12 col-lg-12 col-xl-12">
+
+        <div class="card">
+        <div class="card-body">
+        <h4 class="card-title">Basic Information</h4>
+        <div class="row form-row">
+        <div class="col-md-12">
+        <div class="form-group">
+        <div class="change-avatar">
+        <!-- <div class="profile-img">
+        <img src="{{user.profile_image.url}}" alt="User Image">
+        </div> -->
+        </div>
+        <div class="">
+           <div class="form-group doctor">
+        {{form.media}}
+        {{form.as_p}}
+            </div>
+        </div>
+
+
+        {% if doctor_form.non_field_errors %}
+        <div class="alert alert-danger mt-3" role="alert">
+            {% for error in doctor_form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% for field in doctor_form.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                    {% if field.field.widget.input_type != "select" %}
+                        <label class="focus-label">{{field.label}}</label>
+                    {% endif %}
+                    {{field}}
+                </div>
+                <div class="field_info">
+                    {% if field.help_text %}
+                        <small style="color: grey"><em>{{ field.help_text }}</em></small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+        {% endfor %}
+
+        </div>
+        <div class="submit-section submit-btn-bottom">
+        <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+    </form>
+
+
+
+        </div>
+        </div>
+        </div>
+        </div>
+
+
+
+              </div>
+        </div>
+
+
+
+
+{% endblock %}

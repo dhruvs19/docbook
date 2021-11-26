@@ -1,0 +1,34 @@
+<!-- Sidebar -->
+<div class="dashboard-widget">
+  <nav class="dashboard-menu">
+    <ul>
+      <li>
+        <a href="/doctor/">
+          <i class="fas fa-columns"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/doctor/patient-list/">
+          <i class="fas fa-user-injured"></i>
+          <span>My Patients</span>
+        </a>
+      </li>
+
+      <li class="active">
+        <a href="/doctor/profile/">
+          <i class="fas fa-user-cog"></i>
+          <span>Profile</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'authuser:logout_url' %}">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<!-- !Sidebar -->

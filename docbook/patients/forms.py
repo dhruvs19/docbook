@@ -25,6 +25,14 @@ class PatientsForm(ModelForm):
             'DOB': widgets.DateInput(attrs = { 'type': 'date' }),
             'ProfilePicture': widgets.FileInput(),
         }
+        labels = {
+            "ProfilePicture": "Change Profile Picture",
+            "FirstName": "First Name",
+            "LastName": "Last Name",
+            "Phonenumber": "Phone number",
+            "DOB": "Date of Birth",
+            "BloodGroup": "Select Blood Group"
+        }
         
     
     def __init__(self, *args, **kwargs):
