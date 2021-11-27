@@ -17,3 +17,7 @@
 .appointments-link.new{
     text-align: left;
 }
+
+.appointment-info-row{
+    margin:10px;
+}

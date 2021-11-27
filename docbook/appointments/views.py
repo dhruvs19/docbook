@@ -10,6 +10,15 @@ from .forms import BookAppointmentForm
 import datetime
 from patients.models import Patients
  
+def create_unique_id():
+    return ''.join(random.choices(string.digits, k=9))
+
+
+def create_appointment_id():
+    id = create_unique_id()
+    while Appointments.objects.filter(AppointmentID=id).exists():
+        id = create_unique_id()
+    return id
 
 class BookAppointment(View):
     template_name = "appointments/book-appointment.html"
@@ -40,18 +49,47 @@ class BookAppointment(View):
                 messages.success(self.request, "Appointment Booked!" )
             else:
                 messages.error(self.request, "Something went wrong!")
-            context={"BookAppointmentForm":form}
+            patient_row = Patients.objects.get(UserID = self.request.user)
+            context={
+                "patient_name":patient_row.UserID,
+                "patient_image":patient_row.ProfilePicture,
+                "patient_dob":patient_row.DOB,
+                "BookAppointmentForm":form, 
+                "patient_age": Patients.calculate_age(patient_row.DOB)}
             return(TemplateResponse(self.request, self.template_name, context))
         else:   
             return redirect(reverse("core:home"))
 
+class ViewAppointment(View):
+    template_name = "appointments/view-appointment.html" 
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            patient_row = Patients.objects.get(UserID = self.request.user)
+            patient_appointments = Appointments.objects.all().filter(PatientUser = patient_row)
+            context={
+                "patient_name":patient_row.UserID,
+                "patient_image":patient_row.ProfilePicture,
+                "patient_dob":patient_row.DOB,
+                "patient_appointments":patient_appointments, 
+                "patient_age": Patients.calculate_age(patient_row.DOB)}
+            return(TemplateResponse(self.request, self.template_name, context))
+        else:   
+            return redirect(reverse("core:home"))
 
-def create_unique_id():
-    return ''.join(random.choices(string.digits, k=9))
-
-
-def create_appointment_id():
-    id = create_unique_id()
-    while Appointments.objects.filter(AppointmentID=id).exists():
-        id = create_unique_id()
-    return id
+class AppointmentDetails(View):
+    template_name = "appointments/appointment-details.html"
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            patient_row = Patients.objects.get(UserID = self.request.user)
+            appointment_details = Appointments.objects.get(AppointmentID = kwargs['appointment_id'])
+            doctor_row = DocProfile.objects.get(UserID = appointment_details.DoctorUser)
+            context={
+                "clinic_address":doctor_row.reg_clinic_address,
+                "patient_name":patient_row.UserID,
+                "patient_image":patient_row.ProfilePicture,
+                "patient_dob":patient_row.DOB,
+                "appointment_details":appointment_details, 
+                "patient_age": Patients.calculate_age(patient_row.DOB)}
+            return(TemplateResponse(self.request, self.template_name, context))
+        else:   
+            return redirect(reverse("core:home"))

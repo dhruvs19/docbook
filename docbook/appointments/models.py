@@ -5,10 +5,11 @@ from patients.models import Patients
 from doctor.models import DocProfile
 
 class Appointments(models.Model):
-    AppointmentID       = models.CharField(max_length=15)
+    AppointmentID       = models.CharField(max_length=20)
     PatientUser         = models.ForeignKey(Patients, on_delete = CASCADE, null=True, blank=True)
     DoctorUser          = models.ForeignKey(DocProfile, on_delete = CASCADE, null=True)
     AppointmentDate     = models.DateField(null = False)
+    TimeSlot            = models.CharField(max_length= 20, null=True)
     AppointmentFee      = models.FloatField(blank=True, default = 0)
     Remarks             = models.CharField(max_length = 200, blank=True, null=True)
     Status              = models.CharField(max_length=50, default = "Pending")
