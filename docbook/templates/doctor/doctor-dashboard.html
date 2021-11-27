@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'doctor/docbase.html' %} {% load static %} {% block content %}
 
 
 
@@ -13,16 +13,16 @@
 <div class="widget-profile pro-widget-content">
 <div class="profile-info-widget">
 <a href="#" class="booking-doc-img">
-    {% if user.profile_image %}
-<img src="{{ user.profile_image.url }}" alt="User Image">
+    {% if doc.profile_image %}
+<img src="{{ doc.profile_image.url }}" alt="User Image">
 {% endif %}
 </a>
 <div class="profile-det-info">
-<h3>{{ user.name }}</h3>
-<h5><i>{{ user.bio }}</i></h5>
+<h3>{{ doc.name }}</h3>
+<h5><i>{{ doc.bio }}</i></h5>
 
 <div class="patient-details">
-<h5 class="mb-0">{{ user.qualification }}[{{ user.specialization }}]</h5>
+<h5 class="mb-0">{{ doc.qualification }}[{{ doc.specialization }}]</h5>
 </div>
 <!-- <a class="btn btn-primary w-100 btn-lg login-btn" href="{{update}}">Edit</a> -->
 </div>
@@ -45,14 +45,6 @@
 <h4 class="mb-4">Patient Appoinment</h4>
 <div class="appointment-tab">
 
-<ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-<li class="nav-item">
-<a class="nav-link active" href="#upcoming-appointments" data-bs-toggle="tab">Upcoming</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="#today-appointments" data-bs-toggle="tab">Today</a>
-</li>
-</ul>
 
 <div class="tab-content">
 
@@ -67,16 +59,16 @@
 <th>Appt Date</th>
 <th>Remarks</th>
 <th class="text-center">Paid Amount</th>
-<th></th>
 </tr>
 </thead>
 <tbody>
+    {% if app %}
     {% for app in app %}
 <tr>
 <td>
 <h2 class="table-avatar">
     {% if app.PatientUser.ProfilePicture %}
-<a href="patient-profile.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="{{ app.PatientUser.ProfilePicture.url }}" alt="User Image"></a>
+<a href="patient-profile.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="{{ app.Patientdoc.ProfilePicture.url }}" ></a>
 {% endif %}
 <a href="patient-profile.html">{{ app.PatientUser.FirstName }} {{ app.PatientUser.LastName }}<span>#{{app.AppointmentID}}</span></a>
 </h2>
@@ -102,7 +94,12 @@ Download
 </td>
 </tr>
 {% endfor %}
-
+{% else %}
+<td><h5>No Appointments Today...</h5></td>
+<td></td>
+<td></td>
+<td></td>
+{% endif %}
 </tbody>
 </table>
 </div>
