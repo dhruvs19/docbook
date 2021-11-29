@@ -61,7 +61,7 @@ def acceptView(request,pk):
 	return redirect('/doctor/')
 
 def deleteView(request,pk):
-	Appointments.objects.filter(AppointmentID=pk,Status="Pending").update(Status="Cancelled")
+	Appointments.objects.filter(AppointmentID=pk,Status="Pending").update(Status="Rejected")
 	return redirect('/doctor/')
 
 class PatientListView(ListView):
@@ -79,4 +79,18 @@ class PatientListView(ListView):
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
 	
+class PatientRejListView(ListView):
+	model = DocProfile
+	template_name = 'doctor/patient-list.html'
+
+	def get_context_data(self, *args, **kwargs):
+		if DocProfile.objects.filter(UserID = self.request.user).exists():
+			user = DocProfile.objects.get(UserID = self.request.user)
+			app = Appointments.objects.filter(DoctorUser=self.request.user.id,Status="Rejected")
+			context = super(PatientRejListView, self).get_context_data(*args, **kwargs)
+			context["doc"] = user
+			context["patients"] = app
+			return context
+		else:
+			messages.error(self.request, "Contact with Admin for registration...")
 
