@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
 from .forms import PatientsForm
 from .models import Patients
+from appointments.models import Appointments
 import datetime
 
 
@@ -44,10 +45,11 @@ class PatientDashboard(View):
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             patient_row = Patients.objects.get(UserID = self.request.user)
+            patient_appointments = Appointments.objects.all().filter(PatientUser = patient_row).order_by('-BookingTime')
             context = {
                 "patient_details":patient_row,
-                "patient_age": Patients.calculate_age(patient_row.DOB) }
-            
+                "patient_age": Patients.calculate_age(patient_row.DOB),
+                "patient_appointments":patient_appointments }
             return(TemplateResponse(self.request, self.template_name, context))
         else:   
             return redirect(reverse("core:home"))
