@@ -39,3 +39,5 @@ class BookAppointmentForm(ModelForm):
                 visible.field.widget.attrs['class'] = "form-select form-control floating"
     
 
+    
+
