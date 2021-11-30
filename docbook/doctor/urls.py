@@ -7,6 +7,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
+app_name = 'doctor'
+
 urlpatterns = [
     path('', HomeView.as_view(), name = "home"),
     path('accept/<int:pk>', views.acceptView, name = "accept-view"),
