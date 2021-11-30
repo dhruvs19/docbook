@@ -10,17 +10,19 @@ from .models import DocProfile
 
 class DocProfileForm(forms.ModelForm):
     GROUPS = (
-        ('','Gender'),
+        ('', 'Gender'),
         ('Male', 'Male'),
         ('Female', 'Female'),
 
     )
 
-    gender = forms.ChoiceField(required=True, choices = GROUPS)
+    gender = forms.ChoiceField(required=True, choices=GROUPS)
 
     class Meta:
         model = DocProfile
-        fields = ['profile_image','name', 'gender', 'reg_clinic_address', 'pincode', 'age','bio','qualification','specialization','mobile']
+        fields = ['profile_image', 'name', 'gender', 'reg_clinic_address', 'pincode',
+                  'age', 'bio', 'qualification', 'specialization', 'mobile', 'location']
+
         widgets = {
             'profile_image': widgets.FileInput(),
         }
@@ -34,8 +36,10 @@ class DocProfileForm(forms.ModelForm):
             if visible.field.widget.input_type == "select":
                 visible.field.widget.attrs['class'] = "form-select form-control floating"
 
+
 class UpdateStatus(forms.ModelForm):
     model = Appointments
+
     def save(self, commit=True):
         instance = super(UpdateStatus, self).save(commit=False)
         instance.status = "accepted"
