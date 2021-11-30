@@ -49,14 +49,7 @@ class BookAppointment(View):
                 messages.success(self.request, "Appointment Booked!" )
             else:
                 messages.error(self.request, "Something went wrong!")
-            patient_row = Patients.objects.get(UserID = self.request.user)
-            context={
-                "patient_name":patient_row.UserID,
-                "patient_image":patient_row.ProfilePicture,
-                "patient_dob":patient_row.DOB,
-                "BookAppointmentForm":form, 
-                "patient_age": Patients.calculate_age(patient_row.DOB)}
-            return(TemplateResponse(self.request, self.template_name, context))
+            return redirect(reverse("appointments:list"))
         else:   
             return redirect(reverse("core:home"))
 
@@ -65,7 +58,7 @@ class ViewAppointment(View):
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             patient_row = Patients.objects.get(UserID = self.request.user)
-            patient_appointments = Appointments.objects.all().filter(PatientUser = patient_row)
+            patient_appointments = Appointments.objects.all().filter(PatientUser = patient_row).order_by('-BookingTime')
             context={
                 "patient_name":patient_row.UserID,
                 "patient_image":patient_row.ProfilePicture,
@@ -91,5 +84,17 @@ class AppointmentDetails(View):
                 "appointment_details":appointment_details, 
                 "patient_age": Patients.calculate_age(patient_row.DOB)}
             return(TemplateResponse(self.request, self.template_name, context))
+        else:   
+            return redirect(reverse("core:home"))
+
+class CancelAppointment(View):
+
+    # get request to book-appointment page
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            # patient_row = Patients.objects.get(UserID = self.request.user)
+            Appointments.objects.filter(AppointmentID = kwargs['appointment_id']).update(Status = 'Cancelled')
+            messages.success(self.request, "Appointment Cancelled!" )
+            return redirect(reverse("appointments:list"))
         else:   
             return redirect(reverse("core:home"))
