@@ -1,0 +1,106 @@
+{% extends 'doctor/docbase.html' %} {% load static %} {% block content %}
+
+<div class="breadcrumb-bar">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+              <a href="">Profile</a>
+            </li>
+          </ol>
+        </nav>
+        <h2 class="breadcrumb-title">Profile</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+        <div class="profile-sidebar">
+          <div class="widget-profile pro-widget-content">
+            <div class="profile-info-widget">
+              <a href="#" class="booking-doc-img">
+                <img src="{{ doc.profile_image.url }}" alt="User Image" />
+              </a>
+              <div class="profile-det-info">
+                <h3>{{ doc.name }}</h3>
+                <h5><i>{{ doc.bio }}</i></h5>
+
+                <div class="patient-details">
+                  <h5 class="mb-0">
+                    {{ doc.qualification }}[{{ doc.specialization }}]
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- side bar  -->
+          {% include 'doctor/sidebar.html' %}
+          <!-- side bar ends -->
+        </div>
+      </div>
+
+      <div class="col-md-7 col-lg-8 col-xl-9">
+        <!-- personal information -->
+        <div class="card">
+          <div class="card-body pt-0">
+            <div class="row">
+              <div class="col-md-12 mt-5">
+                <h3>Welcome {{doc.name}}</h3>
+              </div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-12 mb-2 mt-5">
+                <strong>Personal Information</strong>
+              </div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-3">Name</div>
+              <div class="col-md-3">{{doc.name}}</div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-3">Gender</div>
+              <div class="col-md-3">{{doc.gender}}</div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-3">Address</div>
+              <div class="col-md-3">{{doc.reg_clinic_address}}</div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-3">Bio</div>
+              <div class="col-md-3">{{doc.bio}}</div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-3">Contact</div>
+              <div class="col-md-3">{{doc.mobile}}</div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-3">Qualification</div>
+              <div class="col-md-3">{{doc.qualification}}</div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-3">Specialization</div>
+              <div class="col-md-3">{{doc.specialization}}</div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-5 align-items-right appointments-link book">
+                <a href="{{update}}"
+                  ><button class="btn btn-info">Edit</button></a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
