@@ -2,18 +2,25 @@ from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import User
-
-# Create your models here.
+import datetime
 
 class Patients(models.Model):
-    UserID      = models.ForeignKey(User, on_delete = CASCADE, unique = True, primary_key = True)
-    ProfilePicture = models.ImageField(upload_to = './static/img/patients/')
-    FirstName   = models.CharField(max_length = 65)
-    LastName    = models.CharField(max_length = 65)
-    Address     = models.CharField(max_length = 200)
-    PhoneNumber = models.CharField(max_length = 200)
-    DOB         = models.DateField(null = True)
-    BloodGroup  = models.CharField(max_length = 5)
+    UserID          = models.ForeignKey(User, on_delete = CASCADE, unique = True, primary_key = True)
+    ProfilePicture = models.ImageField(upload_to = 'patients/profile_pictures/', null = True)
+    FirstName       = models.CharField(max_length = 65)
+    LastName        = models.CharField(max_length = 65)
+    Address         = models.CharField(max_length = 200)
+    PhoneNumber     = models.CharField(max_length = 200)
+    DOB             = models.DateField(null = True)
+    BloodGroup      = models.CharField(max_length = 5)
 
     def __str__(self):
         return self.UserID.username
+
+    @classmethod
+    def calculate_age(cls, DOB):
+        today = datetime.date.today()
+        years = today.year - DOB.year
+        if today.month < DOB.month or (today.month == DOB.month and today.day < DOB.day):
+            years -= 1
+        return years

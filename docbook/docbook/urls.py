@@ -25,8 +25,8 @@ urlpatterns = [
     path('', include('core.urls', namespace='core')),
     path('doctor/', include('doctor.urls')),
     path('account/', include('authuser.urls', namespace='authuser')),
-    path('account/', include('authuser.urls', namespace='authuser')),
-    path('patients/', include('patients.urls', namespace='patientprofile')),
+    path('patients/', include('patients.urls', namespace='patients')),
+    path('appointments/', include('appointments.urls', namespace='appointments')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
