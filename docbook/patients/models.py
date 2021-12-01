@@ -6,7 +6,7 @@ import datetime
 
 class Patients(models.Model):
     UserID          = models.ForeignKey(User, on_delete = CASCADE, unique = True, primary_key = True)
-    ProfilePicture = models.ImageField(upload_to = 'patients/profile_pictures/', null = True,default='patients/profile_images/profile-default.png')
+    ProfilePicture = models.ImageField(upload_to = 'patients/profile_pictures/', null = True)
     FirstName       = models.CharField(max_length = 65)
     LastName        = models.CharField(max_length = 65)
     Address         = models.CharField(max_length = 200)

@@ -16,8 +16,7 @@
                             <div class="login-header">
                                 <h3>Login <span>docbook</span></h3>
                             </div>
-                            <form method="POST">
-                                {% csrf_token %}
+                            <form method="POST">{% csrf_token %}
                                 <div class="form-group form-focus">
                                     <input type="user" class="form-control floating" name="username">
                                     <label class="focus-label">Username</label>

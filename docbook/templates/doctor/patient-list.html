@@ -3,36 +3,15 @@
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
-        <div class="profile-sidebar">
-          <div class="widget-profile pro-widget-content">
-            <div class="profile-info-widget">
-              <a href="#" class="booking-doc-img">
-                <img src="{{ doc.profile_image.url }}" alt="User Image" />
-              </a>
-              <div class="profile-det-info">
-                <h3>{{ doc.name }}</h3>
-                <h5><i>{{ doc.bio }}</i></h5>
-
-                <div class="patient-details">
-                  <h5 class="mb-0">
-                    {{ doc.qualification }}[{{ doc.specialization }}]
-                  </h5>
-                </div>
-                <!-- <a class="btn btn-primary w-100 btn-lg login-btn" href="{{update}}">Edit</a> -->
-              </div>
-            </div>
-          </div>
-
+      
           <!-- side bar  -->
           {% include 'doctor/sidebar.html' %}
           <!-- side bar ends -->
-        </div>
-      </div>
+      
       <div class="col-md-7 col-lg-8 col-xl-9">
         <div class="row">
           <div class="col-md-12">
-            <h4 class="mb-4">Patient Appoinment</h4>
+            <h4 class="mb-4">Patient Appointment</h4>
             <div class="appointment-tab">
               
 

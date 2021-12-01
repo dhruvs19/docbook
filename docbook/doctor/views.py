@@ -2,11 +2,10 @@
 from django.http.response import HttpResponse
 from django.views.generic import ListView, UpdateView
 from django.shortcuts import redirect, render, reverse
-#from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.views.generic.edit import CreateView
 from .forms import *
-from .models import DocProfile
+from .models import *
 from appointments.models import *
 
 
@@ -47,7 +46,7 @@ class ProfileView(CreateView):
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
 			id = self.request.user.id
-			update = "/doctor/update/"+str(id)
+			update = "/doctor/update/"+ str(id)
 			user = DocProfile.objects.get(UserID = self.request.user)
 			context = super(ProfileView, self).get_context_data(*args, **kwargs)
 			context["doc"] = user
@@ -59,10 +58,12 @@ class ProfileView(CreateView):
 def acceptView(request,pk):
 	Appointments.objects.filter(AppointmentID=pk,Status="Pending").update(Status="Accepted")
 	return redirect('/doctor/')
+	
 
 def deleteView(request,pk):
 	Appointments.objects.filter(AppointmentID=pk,Status="Pending").update(Status="Rejected")
 	return redirect('/doctor/')
+
 
 class PatientListView(ListView):
 	model = DocProfile
@@ -94,3 +95,17 @@ class PatientRejListView(ListView):
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
 
+class CancelledAppListView(ListView):
+	model = DocProfile
+	template_name = 'doctor/patient-list.html'
+
+	def get_context_data(self, *args, **kwargs):
+		if DocProfile.objects.filter(UserID = self.request.user).exists():
+			user = DocProfile.objects.get(UserID = self.request.user)
+			app = Appointments.objects.filter(DoctorUser=self.request.user.id,Status="Cancelled")
+			context = super(CancelledAppListView, self).get_context_data(*args, **kwargs)
+			context["doc"] = user
+			context["patients"] = app
+			return context
+		else:
+			messages.error(self.request, "Contact with Admin for registration...")
