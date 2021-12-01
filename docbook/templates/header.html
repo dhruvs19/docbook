@@ -144,15 +144,11 @@
                     </li>
                 </ul>
             </li>
-            <li> <a href="admin/index.html" target="_blank">Admin</a>
+            {% if user.is_authenticated %}
+            <li><a href="#">My Account</a>
+                
             </li>
-            <li class="login-link"> 
-                {% if request.user.is_authenticated %}
-                    <a href="{% url 'authuser:login_url' %}">Logout</a>
-                {% else %}
-                    <a href="{% url 'authuser:login_url' %}">Login / Signup</a>
-                {% endif %}
-            </li>
+            {% endif %}
             </ul>
         </div>
         <ul class="nav header-navbar-rht">
@@ -161,7 +157,7 @@
                 </div>
                 <div class="header-contact-detail text-white">
                     <p class="contact-header">Contact</p>
-                    <p class="contact-info-header">+1 315 369 5943</p>
+                    <p class="contact-info-header">+1 647-838-6026</p>
                 </div>
             </li>
             <li class="nav-item">
