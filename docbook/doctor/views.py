@@ -1,4 +1,5 @@
 
+from django.contrib.messages.api import success
 from django.http.response import HttpResponse
 from django.views.generic import ListView, UpdateView
 from django.shortcuts import redirect, render, reverse
@@ -29,7 +30,6 @@ class UpdateDoctorView(UpdateView):
 	model = DocProfile
 	form_class = DocProfileForm
 	template_name = 'doctor/profile-setting.html'
-
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
 			doc = DocProfile.objects.get(UserID = self.request.user)
@@ -38,6 +38,8 @@ class UpdateDoctorView(UpdateView):
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
+	def get_success_url(self):
+		return reverse("doctor:doctor-register",kwargs={'pk':self.request.user.id})
 
 class ProfileView(CreateView):
 	model = DocProfile
