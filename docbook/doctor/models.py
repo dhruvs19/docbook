@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.db.models.base import Model
 from django.urls import reverse, reverse_lazy
@@ -16,15 +15,17 @@ class Specialization(models.Model):
 class Location(models.Model):
     location = models.CharField(max_length=200, primary_key=True)
 
-    # def __str__(self):
-    #     return self.location
+    def __str__(self):
+        return self.location
 
 
 class DocProfile(models.Model):
     profile_image = models.ImageField(
-        upload_to='doctors/profile_images', blank=True, default='doctors/profile_images/profile-default.png')
-    UserID = models.ForeignKey(
-        User, unique=True, primary_key=True, on_delete=CASCADE)
+        upload_to='doctors/profile_images', 
+        blank=True, 
+        default='doctors/profile_images/profile-default.png'
+    )
+    UserID = models.ForeignKey(User, unique=True, primary_key=True, on_delete=CASCADE)
     name = models.CharField(max_length=200)
     gender = models.CharField(max_length=10)
     reg_clinic_address = models.CharField(max_length=200)
@@ -38,6 +39,3 @@ class DocProfile(models.Model):
 
     def __str__(self):
         return self.UserID.username
-
-    def get_absolute_url(self):
-        return reverse('home')
