@@ -24,15 +24,18 @@
                           <thead>
                             <tr>
                               <th>Patient Name</th>
-                              <th>Appt Date</th>
+                              <th>Appointment Date</th>
+                              <th>Appointment Time</th>
                               <th>Remarks</th>
-                              <th class="text-center">Paid Amount</th>
-                              <th></th>
+                              <th>Paid Amount</th>
+                              <th>Prescription</th>
                             </tr>
                           </thead>
                           <tbody>
                             {% for patient in patients %}
                             <tr>
+                              <form  method="POST" action="{% url 'update-ap' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
                               <td>
                                 <h2 class="table-avatar">
                                   <a
@@ -42,28 +45,37 @@
                                       class="avatar-img rounded-circle"
                                       src="{{ patient.Patientdoc.ProfilePicture.url }}"
                                   /></a>
-                                  <a href="patient-profile.html">{{patient.PatientUser.FirstName}} {{patient.PatientUser.LastName }}<span>#{{patient.AppointmentID}}</span></a>
+                                  <a href="patient-profile.html">{{patient.PatientUser.FirstName}} {{ patient.PatientUser.LastName }}<span>#{{patient.AppointmentID}}</span></a>
                                 </h2>
                               </td>
                               <td>{{ patient.AppointmentDate }}</td>
+                              <td>{{ patient.TimeSlot }}</td>
+                              {% if patient.Remarks == None %}
+                              <td><input type="text" class="form-control" name="remark" placeholder="Add remark..." id="amount"/></td>
 
-                              <td class="text-center">{{ patient.Remarks }}</td>
-
-                              <td class="text-center">
-                                ${{ patient.AppointmentFee }}
+                              <td>
+                                <input type="text" class="form-control" name="amount" placeholder="00.00" id="amount"/>
+                                <input type="text" class="form-control" name="id" value="{{ patient.AppointmentID }}" id="id" hidden/>
+                              </td>
+                              <td>
+                                <input type="file" class="form-control" name="document" id="document">
                               </td>
                               <td class="text-end">
                                 <div class="table-action">
-                                  <a
-                                    href="/media/{{ patient.Document }}"
-                                    class="btn btn-sm bg-info-light"
-                                    download="s."
-                                  >
-                                    Download
-                                  </a>
-                                  
+                                  <button class="btn btn-sm bg-success-light" type="submit">
+                                    Save
+                                  </button>
                                 </div>
                               </td>
+                              {% else %}
+                              <td>{{ patient.Remarks }}</td>
+                              <td>${{ patient.AppointmentFee }}</td>
+                              <td><a href="/media/appointment-documents/{{ patient.Document }}" class="btn btn-sm bg-info-light" download="afgdgfd">
+                                Download
+                                </a></td>
+                              {% endif %}
+                              
+                            </form>
                             </tr>
                             {% endfor %}
                           </tbody>

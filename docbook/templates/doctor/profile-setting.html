@@ -29,73 +29,70 @@
         {% include 'doctor/sidebar.html' %}
         <!-- side bar ends -->
 
+
+        
         <div class="col-md-7 col-lg-8 col-xl-9">
 
 
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-            <div class="col-md-12 col-lg-12 col-xl-12">
-    
-            <div class="card">
-            <div class="card-body">
-            <h4 class="card-title">Basic Information</h4>
-            <div class="row form-row">
-            <div class="col-md-12">
-            <div class="form-group">
-            <div class="change-avatar">
-            <!-- <div class="profile-img">
-            <img src="{{doc.profile_image.url}}" alt="User Image">
-            </div> -->
-            </div>
-            <div class="">
-               <div class="form-group doctor">
-            {{form.media}}
-            {{form.as_p}}
-                </div>
-            </div>
-    
-    
-            {% if doctor_form.non_field_errors %}
-            <div class="alert alert-danger mt-3" role="alert">
-                {% for error in doctor_form.non_field_errors %}
-                <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% for field in doctor_form.visible_fields %}
-                    <div class="col-md-6">
-                        <div class="form-group">
-                        {% if field.field.widget.input_type != "select" %}
-                            <label class="focus-label">{{field.label}}</label>
-                        {% endif %}
-                        {{field}}
-                    </div>
-                    <div class="field_info">
-                        {% if field.help_text %}
-                            <small style="color: grey"><em>{{ field.help_text }}</em></small>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <p style="color: red">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        <div class="col-md-12 col-lg-12 col-xl-12">
+
+        <div class="card">
+        <div class="card-body">
+        <h4 class="card-title">Basic Information</h4>
+        <div class="row form-row">
+        <div class="col-md-12">
+        <div class="form-group">
+        <div class="change-avatar">
+        <!-- <div class="profile-img">
+        <img src="{{doc.profile_image.url}}" alt="User Image">
+        </div> -->
+        </div>
+        <div class="">
+           <div class="form-group doctor">
+        {{form.media}}
+        {{form.as_p}}
             </div>
         </div>
+
+
+        {% if doctor_form.non_field_errors %}
+        <div class="alert alert-danger mt-3" role="alert">
+            {% for error in doctor_form.non_field_errors %}
+            <p>{{ error }}</p>
             {% endfor %}
-    
+        </div>
+        {% endif %}
+        {% for field in doctor_form.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                    {% if field.field.widget.input_type != "select" %}
+                        <label class="focus-label">{{field.label}}</label>
+                    {% endif %}
+                    {{field}}
+                </div>
+                <div class="field_info">
+                    {% if field.help_text %}
+                        <small style="color: grey"><em>{{ field.help_text }}</em></small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="submit-section submit-btn-bottom">
-            <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
-            </div>
-            </div>
-            </div>
-            </div>
-            </div>
+        </div>
+    </div>
+        {% endfor %}
 
         </div>
-
+        <div class="submit-section submit-btn-bottom">
+        <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
         </div>
-      
+        </div>
+        </div>
+        </div>
+        </div>
 
     </form>
 

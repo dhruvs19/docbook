@@ -1,21 +1,22 @@
-.doctor {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #ffffff;
-  margin: 52px;
-  gap: 10px;
+.doctor{
+display: grid;
+grid-template-columns: auto auto auto;
+background-color: #ffffff;
+padding: 132px;
+margin: 52px;
+gap: 10px;
 }
 
-.doctor .form-field:first-of-type {
-  margin-top: -43px !important;
+.doctor .form-field:first-of-type{
+    margin-top: -43px!important;
 }
-.doc-btn {
-  margin-left: 75%;
+.doc-btn{
+    margin-left: 75%;
 }
-.doctor .img {
-  position: absolute;
-  top: -99%;
-  left: 115%;
-  width: 40px;
-  height: 40px;
+.doctor .img{
+    position: absolute;
+    top: -99%;
+    left: 115%;
+    width: 40px;
+    height: 40px;
 }

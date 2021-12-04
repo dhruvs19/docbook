@@ -1,4 +1,6 @@
-{% extends 'doctor/docbase.html' %} {% load static %} {% block content %}
+{% extends 'doctor/docbase.html' %}
+{% load static %}
+{% block content %}
 
 
 
@@ -32,8 +34,9 @@
 <thead>
 <tr>
 <th>Patient Name</th>
-<th>Appt Date</th>
+<th>Appointment Date</th>
 <th>Remarks</th>
+<th>Appointment Time</th>
 <th class="text-center">Paid Amount</th>
 </tr>
 </thead>
@@ -53,11 +56,12 @@
 
 
 <td class="text-center">{{ app.Remarks }}</td>
+<td class="text-center">{{ app.TimeSlot }}</td>
 
 <td class="text-center">${{ app.AppointmentFee }}</td>
 <td class="text-end">
 <div class="table-action">
-<a href="/media/{{ app.Document }}" class="btn btn-sm bg-info-light" download="s.">
+<a href="/media/appointment-documents/{{ app.Document }}" class="btn btn-sm bg-info-light" download="">
 Download
 </a>
 <a href="/doctor/accept/{{app.AppointmentID}}" class="btn btn-sm bg-success-light">

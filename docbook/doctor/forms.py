@@ -49,9 +49,4 @@ class DocProfileForm(forms.ModelForm):
             if visible.field.widget.input_type == "select":
                 visible.field.widget.attrs['class'] = "form-select form-control floating"
 
-class UpdateStatus(forms.ModelForm):
-    model = Appointments
-    def save(self, commit=True):
-        instance = super(UpdateStatus, self).save(commit=False)
-        instance.status = "accepted"
-        instance.save()
+
