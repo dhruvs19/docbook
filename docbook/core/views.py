@@ -2,7 +2,6 @@ from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import Group
 from django.contrib import messages
-from django.views import View
 
 class HomepageView(TemplateView):
     
@@ -18,7 +17,4 @@ class HomepageView(TemplateView):
                 return context
             else:
                 messages.error(self.request, "Group Not Assigned...")
-
-
-
 

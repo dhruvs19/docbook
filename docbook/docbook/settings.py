@@ -28,7 +28,7 @@ DEBUG = True
 APPEND_SLASH=False
 ALLOWED_HOSTS = ['*']
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/account/login_success/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Application definition

@@ -1,38 +1,17 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'doctor/docbase.html' %} {% load static %} {% block content %}
 
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
-        <div class="profile-sidebar">
-          <div class="widget-profile pro-widget-content">
-            <div class="profile-info-widget">
-              <a href="#" class="booking-doc-img">
-                <img src="{{ doc.profile_image.url }}" alt="User Image" />
-              </a>
-              <div class="profile-det-info">
-                <h3>{{ doc.name }}</h3>
-                <h5><i>{{ doc.bio }}</i></h5>
-
-                <div class="patient-details">
-                  <h5 class="mb-0">
-                    {{ doc.qualification }}[{{ doc.specialization }}]
-                  </h5>
-                </div>
-                <!-- <a class="btn btn-primary w-100 btn-lg login-btn" href="{{update}}">Edit</a> -->
-              </div>
-            </div>
-          </div>
-
+      
           <!-- side bar  -->
           {% include 'doctor/sidebar.html' %}
           <!-- side bar ends -->
-        </div>
-      </div>
+      
       <div class="col-md-7 col-lg-8 col-xl-9">
         <div class="row">
           <div class="col-md-12">
-            <h4 class="mb-4">Patient Appoinment</h4>
+            <h4 class="mb-4">Patient Appointment</h4>
             <div class="appointment-tab">
               
 
@@ -45,15 +24,18 @@
                           <thead>
                             <tr>
                               <th>Patient Name</th>
-                              <th>Appt Date</th>
+                              <th>Appointment Date</th>
+                              <th>Appointment Time</th>
                               <th>Remarks</th>
-                              <th class="text-center">Paid Amount</th>
-                              <th></th>
+                              <th>Paid Amount</th>
+                              <th>Prescription</th>
                             </tr>
                           </thead>
                           <tbody>
                             {% for patient in patients %}
                             <tr>
+                              <form  method="POST" action="{% url 'update-ap' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
                               <td>
                                 <h2 class="table-avatar">
                                   <a
@@ -63,28 +45,37 @@
                                       class="avatar-img rounded-circle"
                                       src="{{ patient.Patientdoc.ProfilePicture.url }}"
                                   /></a>
-                                  <a href="patient-profile.html">{{patient.PatientUser.FirstName}} {{patient.PatientUser.LastName }}<span>#{{patient.AppointmentID}}</span></a>
+                                  <a href="patient-profile.html">{{patient.PatientUser.FirstName}} {{ patient.PatientUser.LastName }}<span>#{{patient.AppointmentID}}</span></a>
                                 </h2>
                               </td>
                               <td>{{ patient.AppointmentDate }}</td>
+                              <td>{{ patient.TimeSlot }}</td>
+                              {% if patient.Remarks == None %}
+                              <td><input type="text" class="form-control" name="remark" placeholder="Add remark..." id="amount"/></td>
 
-                              <td class="text-center">{{ patient.Remarks }}</td>
-
-                              <td class="text-center">
-                                ${{ patient.AppointmentFee }}
+                              <td>
+                                <input type="text" class="form-control" name="amount" placeholder="00.00" id="amount"/>
+                                <input type="text" class="form-control" name="id" value="{{ patient.AppointmentID }}" id="id" hidden/>
+                              </td>
+                              <td>
+                                <input type="file" class="form-control" name="document" id="document">
                               </td>
                               <td class="text-end">
                                 <div class="table-action">
-                                  <a
-                                    href="/media/{{ patient.Document }}"
-                                    class="btn btn-sm bg-info-light"
-                                    download="s."
-                                  >
-                                    Download
-                                  </a>
-                                  
+                                  <button class="btn btn-sm bg-success-light" type="submit">
+                                    Save
+                                  </button>
                                 </div>
                               </td>
+                              {% else %}
+                              <td>{{ patient.Remarks }}</td>
+                              <td>${{ patient.AppointmentFee }}</td>
+                              <td><a href="/media/appointment-documents/{{ patient.Document }}" class="btn btn-sm bg-info-light" download="afgdgfd">
+                                Download
+                                </a></td>
+                              {% endif %}
+                              
+                            </form>
                             </tr>
                             {% endfor %}
                           </tbody>

@@ -4,7 +4,6 @@ from django.forms import ModelForm, widgets, DateField
 from .models import Appointments
 from patients.models import Patients
 from doctor.models import DocProfile
-import datetime
 
 
 class BookAppointmentForm(ModelForm):
@@ -29,11 +28,6 @@ class BookAppointmentForm(ModelForm):
             "AppointmentDate": "Appointment Date"
         }
         
-    def clean_date(self):
-        date = self.cleaned_data['date']
-        if date < datetime.date.today():
-            raise forms.ValidationError("The date cannot be in the past!")
-        return date
     
     def __init__(self, *args, **kwargs):
         super(BookAppointmentForm, self).__init__(*args, **kwargs)
@@ -43,7 +37,5 @@ class BookAppointmentForm(ModelForm):
 
             if visible.field.widget.input_type == "select":
                 visible.field.widget.attrs['class'] = "form-select form-control floating"
-    
-
     
 
