@@ -9,7 +9,8 @@ from doctor.models import DocProfile
 from .forms import BookAppointmentForm
 import datetime
 from patients.models import Patients
- 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 def create_unique_id():
     return ''.join(random.choices(string.digits, k=9))
 
@@ -20,7 +21,8 @@ def create_appointment_id():
         id = create_unique_id()
     return id
 
-class BookAppointment(View):
+
+class BookAppointment(LoginRequiredMixin, View):
     template_name = "appointments/book-appointment.html"
 
     # get request to book-appointment page

@@ -1,15 +1,12 @@
 
-from django.contrib.messages.api import success
-from django.http.response import HttpResponse
 from django.views.generic import ListView, UpdateView
 from django.shortcuts import redirect, render, reverse
-#from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.views.generic.edit import CreateView
 from .forms import *
-from .models import DocProfile
+from .models import *
 from appointments.models import *
-
+from django.views import View
 
 class HomeView(ListView):
 	model = DocProfile
@@ -96,3 +93,21 @@ class PatientRejListView(ListView):
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
 
+class GetDoctorListing(View):
+	def get(self, *args, **kwargs):
+		filterQuery = {}
+		context = {
+			'locations': Location.objects.all(),
+			'specializations': Specialization.objects.all()
+		}
+
+		if 'location' in self.request.GET:
+			filterQuery['location'] = self.request.GET['location']
+		if 'gender' in self.request.GET:
+			filterQuery['gender'] = self.request.GET['gender']
+		if 'specs' in self.request.GET:
+			filterQuery['specialization'] = self.request.GET['specs']
+
+		context['doctor_list'] = DocProfile.objects.filter(**filterQuery)
+		
+		return render(self.request, "doctor/doctor-list.html", context)

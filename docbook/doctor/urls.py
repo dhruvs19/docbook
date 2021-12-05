@@ -16,4 +16,5 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name = "profile-view"),
     path('update/<int:pk>', UpdateDoctorView.as_view(),name = "doctor-register"),
     path('delete/<int:pk>', views.deleteView, name = "delete-view"),
+    path('doctor_list', GetDoctorListing.as_view(), name = "doctor-list"),
 ]
