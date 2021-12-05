@@ -52,9 +52,9 @@ class LoginPage(LoginView):
             if user.is_authenticated:
                 if user.is_superuser: return reverse("admin:index")
                 elif user.groups.filter(name='doctor').exists(): 
-                    return reverse("doctor:profile-view")
+                   return reverse("doctor:home")
                 elif user.groups.filter(name='patient').exists():
-                    return reverse("patients:dashboard")
+                     return reverse("patients:dashboard")
         else:
             return self.request.GET['next']
         return super().get_success_url()

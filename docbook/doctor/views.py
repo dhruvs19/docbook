@@ -6,7 +6,8 @@ from django.views.generic.edit import CreateView
 from .forms import *
 from .models import *
 from appointments.models import *
-from django.views import View
+from django.views.generic import View
+from django.template.response import TemplateResponse
 
 class HomeView(ListView):
 	model = DocProfile
@@ -92,6 +93,17 @@ class PatientRejListView(ListView):
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
+
+
+class DoctorPublicProfile(View):
+	template_name = "doctor/doctor_public_profile.html"
+
+	def get(self, *args, **kwargs):
+		# doctor_row = DocProfile.objects.get(UserID = kwargs['userid'])
+		doctor_row = DocProfile.objects.get(UserID = 25)
+		context={
+			"doctor_details":doctor_row}
+		return(TemplateResponse(self.request, self.template_name, context))
 
 class GetDoctorListing(View):
 	def get(self, *args, **kwargs):
