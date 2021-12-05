@@ -1,4 +1,4 @@
-{% extends 'doctor/docbase.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
 
@@ -38,7 +38,7 @@
                             <div class="col-md-3">{{ap.AppointmentID}}</div>
                         </div>
                         <div class="row appointment-info-row">
-                            <div class="col-md-3">Doctor Name</div>
+                            <div class="col-md-3">Patient Name</div>
                             <div class="col-md-3">{{ap.PatientUser}}</div>
                         </div>
                         <div class="row appointment-info-row">
@@ -51,7 +51,7 @@
                         </div>
                         <div class="row appointment-info-row">
                             <div class="col-md-3">Clinic Address</div>
-                            <div class="col-md-3">{{clinic_address}}</div>
+                            <div class="col-md-3">{{ap.DoctorUser.reg_clinic_address}}</div>
                         </div>
                         <div class="row appointment-info-row">
                             <div class="col-md-3">Status</div>
@@ -67,7 +67,10 @@
                         </div>
                         <div class="row appointment-info-row">
                             <div class="col-md-3">Records/ Documents</div>
-                            <div class="col-md-3">{{ap.Document}}</div>
+                            <div class="col-md-3">
+                                <a href={{ ap.Document }} class="btn btn-sm bg-info-light" download>
+                                Download
+                                </a></div>
                         </div>
                         {% if ap.Status == 'Accepted' %}
                             <div class="row appointment-info-row mt-4">

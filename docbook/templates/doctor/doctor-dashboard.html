@@ -1,4 +1,4 @@
-{% extends 'doctor/docbase.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
 
@@ -61,7 +61,7 @@
 <td class="text-center">${{ app.AppointmentFee }}</td>
 <td class="text-end">
 <div class="table-action">
-<a href="/media/appointment-documents/{{ app.Document }}" class="btn btn-sm bg-info-light" download="">
+<a href="/media/appointment-documents/{{ app.Document }}" class="btn btn-sm bg-info-light" download>
 Download
 </a>
 <a href="/doctor/accept/{{app.AppointmentID}}" class="btn btn-sm bg-success-light">
@@ -76,6 +76,7 @@ Download
 {% endfor %}
 {% else %}
 <td><h5>No Appointments Today...</h5></td>
+<td></td>
 <td></td>
 <td></td>
 <td></td>

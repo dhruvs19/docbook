@@ -9,6 +9,5 @@ app_name = 'authuser'
 urlpatterns = [
     path('login/', LoginPage.as_view(), name="login_url"),
     path('register/', RegisterPage.as_view(), name="register_url"),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout_url'),
-    path('login_success/', LoginSuccess.as_view(), name='login_success_url')
+    path('logout/', auth_views.LogoutView.as_view(), name='logout_url')
 ]

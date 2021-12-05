@@ -2,7 +2,7 @@ from django import forms
 from django.forms import TextInput
 from django.contrib.auth.models import User
 from django.forms import ModelForm, widgets, DateField
-from .models import Patients
+from .models import Diagnosis, Patients
 
 
 class PatientsForm(ModelForm):
@@ -43,6 +43,31 @@ class PatientsForm(ModelForm):
 
             if visible.field.widget.input_type == "select":
                 visible.field.widget.attrs['class'] = "form-select form-control floating"
-    
 
-        
+class DiagnosisForm(ModelForm):
+    TestTypes = (
+        ('','Select Diagnosis Type'),
+        ('X-Ray','X-Ray'),
+        ('Complete Blood Count','Complete blood count'),
+        ('Vitamin D Test', 'Vitamin D Test'),
+        ('PULS (Protein Unstable Lesion Signature Test) Cardiac Test' ,'PULS (Protein Unstable Lesion Signature Test) Cardiac Test'),
+        ('ABPM','ABPM')
+    )
+    DiagnosisName = forms.ChoiceField(required=True, choices = TestTypes)
+    class Meta:
+        model = Diagnosis
+        fields = ['DiagnosisName', 'Document']
+        widgets = { 
+            'Document': widgets.FileInput(),
+        }
+        labels = {
+            "Document" : "Upload Diagnosis Document"
+        }
+    def __init__(self, *args, **kwargs):
+        super(DiagnosisForm, self).__init__(*args, **kwargs)
+            
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control floating'
+
+            if visible.field.widget.input_type == "select":
+                visible.field.widget.attrs['class'] = "form-select form-control floating"

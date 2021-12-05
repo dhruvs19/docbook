@@ -7,6 +7,10 @@ from django.views.generic.edit import CreateView
 from .forms import *
 from .models import *
 from appointments.models import *
+from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.models import Group
+
+
 
 # To render homepage
 class HomeView(ListView):
@@ -15,11 +19,13 @@ class HomeView(ListView):
 
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
+			grp = Group.objects.get(name=self.request.user.groups.get())
 			doc = DocProfile.objects.get(UserID = self.request.user)
 			app = Appointments.objects.filter(DoctorUser=self.request.user.id,Status="Pending")
 			context = super(HomeView, self).get_context_data(*args, **kwargs)
 			context["doc"] = doc
 			context["app"] = app
+			context["grp"] = str(grp)
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
@@ -32,9 +38,11 @@ class UpdateDoctorView(UpdateView):
 
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
+			grp = Group.objects.get(name=self.request.user.groups.get())
 			doc = DocProfile.objects.get(UserID = self.request.user)
 			context = super(UpdateDoctorView, self).get_context_data(*args, **kwargs)
 			context["doc"] = doc
+			context["grp"] = str(grp)
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
@@ -47,10 +55,12 @@ class ProfileView(CreateView):
 	
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
+			grp = Group.objects.get(name=self.request.user.groups.get())
 			id = self.request.user.id
 			update = "/doctor/update/"+ str(id)
 			user = DocProfile.objects.get(UserID = self.request.user)
 			context = super(ProfileView, self).get_context_data(*args, **kwargs)
+			context["grp"] = str(grp)
 			context["doc"] = user
 			context["update"] = update
 			return context
@@ -66,7 +76,7 @@ def acceptView(request,pk):
 # To reject the appointment
 def deleteView(request,pk):
 	Appointments.objects.filter(AppointmentID=pk).update(Status="Rejected")
-	return redirect('/doctor/')
+	return redirect('/doctor/view-app/')
 
 # To view the accepted appointment patients
 class PatientListView(ListView):
@@ -75,16 +85,18 @@ class PatientListView(ListView):
 
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
+			grp = Group.objects.get(name=self.request.user.groups.get())
 			user = DocProfile.objects.get(UserID = self.request.user)
 			app = Appointments.objects.filter(DoctorUser=self.request.user.id,Status="Accepted")
 			context = super(PatientListView, self).get_context_data(*args, **kwargs)
 			context["doc"] = user
 			context["patients"] = app
+			context["grp"] = str(grp)
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
 
-# To view the rejected appointment patients	
+# To view the rejected appointment of patients	
 class PatientRejListView(ListView):
 	model = DocProfile
 	template_name = 'doctor/patient-list.html'
@@ -92,28 +104,15 @@ class PatientRejListView(ListView):
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
 			user = DocProfile.objects.get(UserID = self.request.user)
+			grp = Group.objects.get(name=self.request.user.groups.get())
 			app = Appointments.objects.filter(DoctorUser=self.request.user.id,Status="Rejected")
 			context = super(PatientRejListView, self).get_context_data(*args, **kwargs)
 			context["doc"] = user
 			context["patients"] = app
+			context["grp"] = str(grp)
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
-
-# class CancelledAppListView(ListView):
-# 	model = DocProfile
-# 	template_name = 'doctor/patient-list.html'
-
-# 	def get_context_data(self, *args, **kwargs):
-# 		if DocProfile.objects.filter(UserID = self.request.user).exists():
-# 			user = DocProfile.objects.get(UserID = self.request.user)
-# 			app = Appointments.objects.filter(DoctorUser=self.request.user.id,Status="Cancelled")
-# 			context = super(CancelledAppListView, self).get_context_data(*args, **kwargs)
-# 			context["doc"] = user
-# 			context["patients"] = app
-# 			return context
-# 		else:
-# 			messages.error(self.request, "Contact with Admin for registration...")
 
 # To view all appointments
 class ViewApp(ListView):
@@ -122,10 +121,13 @@ class ViewApp(ListView):
 	def get_context_data(self, *args, **kwargs):
 		if DocProfile.objects.filter(UserID = self.request.user).exists():
 			user = DocProfile.objects.get(UserID = self.request.user)
+			grp = Group.objects.get(name=self.request.user.groups.get())
 			app = Appointments.objects.filter(DoctorUser=self.request.user.id)
 			context = super(ViewApp, self).get_context_data(*args, **kwargs)
+			print(type(grp))
 			context["doc"] = user
 			context["app"] = app
+			context["grp"] = str(grp)
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
@@ -143,6 +145,9 @@ def appDetails(request,appointment_id):
 # To update the appointment
 def updateAppointment(request):
 	appointment_id=request.POST["id"]
-	print(request.FILES["document"])
-	Appointments.objects.filter(AppointmentID=appointment_id).update(Remarks=request.POST["remark"],AppointmentFee=request.POST["amount"],Document=request.FILES["document"])
+	data = request.FILES["document"]
+	fs = FileSystemStorage()
+	file = fs.save(f"patients/appointment-documents/{data.name}",data)
+	file_url = fs.url(file)
+	Appointments.objects.filter(AppointmentID=appointment_id).update(Remarks=request.POST["remark"],AppointmentFee=request.POST["amount"],Document=file_url)
 	return redirect("/doctor/view-app/")

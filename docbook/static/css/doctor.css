@@ -1,10 +1,9 @@
 .doctor{
-display: grid;
-grid-template-columns: auto auto auto;
-background-color: #ffffff;
-padding: 132px;
-margin: 52px;
-gap: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: #ffffff;
+  margin: auto;
+  gap: 10px;
 }
 
 .doctor .form-field:first-of-type{
