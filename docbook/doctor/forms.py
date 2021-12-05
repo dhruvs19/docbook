@@ -5,24 +5,37 @@ from django.forms import ModelForm, widgets, DateField
 from django.forms import ModelForm
 
 from appointments.models import Appointments
-from .models import DocProfile
+from .models import *
 
 
 class DocProfileForm(forms.ModelForm):
     GROUPS = (
-        ('', 'Gender'),
+        ('','Gender'),
         ('Male', 'Male'),
         ('Female', 'Female'),
 
     )
+    GROUPS_S = (
+        ('','Specialization'),
+        ('Cardiologist', 'Cardiologist'),
+        ('Neurologist', 'Neurologist'),
+        ('Gynaecologist','Gynaecologist')
+    )
 
-    gender = forms.ChoiceField(required=True, choices=GROUPS)
+    GROUPS_L = (
+        ('','Location'),
+        ('Ontario(ON)', 'Ontario(ON)'),
+        ('Quebec(QC)', 'Quebec(QC)'),
+        ('Alberta(AB)','Alberta(AB)'),
+    )
+
+    gender = forms.ChoiceField(required=True, choices = GROUPS)
+    specialization = forms.ChoiceField(required=True, choices = GROUPS_S)
+    location = forms.ChoiceField(required=True, choices = GROUPS_L)
 
     class Meta:
         model = DocProfile
-        fields = ['profile_image', 'name', 'gender', 'reg_clinic_address', 'pincode',
-                  'age', 'bio', 'qualification', 'specialization', 'mobile', 'location']
-
+        fields = ['profile_image','name', 'gender', 'reg_clinic_address', 'pincode','location', 'age','bio','qualification','specialization','mobile']
         widgets = {
             'profile_image': widgets.FileInput(),
         }
@@ -37,10 +50,3 @@ class DocProfileForm(forms.ModelForm):
                 visible.field.widget.attrs['class'] = "form-select form-control floating"
 
 
-class UpdateStatus(forms.ModelForm):
-    model = Appointments
-
-    def save(self, commit=True):
-        instance = super(UpdateStatus, self).save(commit=False)
-        instance.status = "accepted"
-        instance.save()
