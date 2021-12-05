@@ -18,4 +18,6 @@ urlpatterns = [
     path('update/<int:pk>', UpdateDoctorView.as_view(),name = "doctor-register"),
     path('delete/<int:pk>', views.deleteView, name = "delete-view"),
     re_path(r'^doctor-profile/(?P<UserID>\w{0,50})/$', DoctorPublicProfile.as_view(), name = "doctor_public")
+    path('doctor_list', GetDoctorListing.as_view(), name = "doctor-list"),
+
 ]

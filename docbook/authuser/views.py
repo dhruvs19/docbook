@@ -1,4 +1,5 @@
 from django import forms
+from django.http import request
 from .forms import NewUserForm
 from django.contrib import messages
 from doctor.models import DocProfile
@@ -46,13 +47,16 @@ class LoginPage(LoginView):
 
     # redirect after logging in as per the user role
     def get_success_url(self):
-        user = self.request.user
-        if user.is_authenticated:
-            if user.is_superuser: return reverse("admin:index")
-            elif user.groups.filter(name='doctor').exists(): 
-                return reverse("doctor:home")
-            elif user.groups.filter(name='patient').exists():
-                return reverse("patients:dashboard")
+        if 'next' not in self.request.GET:
+            user = self.request.user
+            if user.is_authenticated:
+                if user.is_superuser: return reverse("admin:index")
+                elif user.groups.filter(name='doctor').exists(): 
+                   return reverse("doctor:home")
+                elif user.groups.filter(name='patient').exists():
+                     return reverse("patients:dashboard")
+        else:
+            return self.request.GET['next']
         return super().get_success_url()
 
 class RegisterPage(View):
