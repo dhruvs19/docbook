@@ -5,6 +5,7 @@ from .views  import *
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import re_path
 
 
 urlpatterns = [
@@ -16,13 +17,10 @@ urlpatterns = [
     path('rej-patient-list/', PatientRejListView.as_view(), name = "reject-view"),
     path('update/<int:pk>', UpdateDoctorView.as_view(),name = "doctor-register"),
     path('delete/<int:pk>', views.deleteView, name = "delete-view"),
-    #path('app-details/<str:appointment_id>', views.appDetails , name = "ap-details"),
     re_path(r'^app-details/(?P<appointment_id>\w{0,50})/$', views.appDetails, name = "ap-details"),
     re_path('update-appointment/', views.updateAppointment, name = "update-ap"),
+    re_path(r'^doctor-profile/(?P<UserID>\w{0,50})/$', DoctorPublicProfile.as_view(), name = "doctor_public"),
+    path('doctor_list', GetDoctorListing.as_view(), name = "doctor-list")
 ]
 
 
-
-if settings.DEBUG:
-        urlpatterns += static(settings.MEDIA_URL,
-                              document_root=settings.MEDIA_ROOT)

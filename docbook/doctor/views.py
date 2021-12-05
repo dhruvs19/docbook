@@ -1,5 +1,5 @@
+
 from django.http.response import HttpResponse
-from django.template.response import TemplateResponse
 from django.views.generic import ListView, UpdateView
 from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
@@ -7,10 +7,11 @@ from django.views.generic.edit import CreateView
 from .forms import *
 from .models import *
 from appointments.models import *
+
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import Group
-
-
+from django.views.generic import View
+from django.template.response import TemplateResponse
 
 # To render homepage
 class HomeView(ListView):
@@ -151,3 +152,33 @@ def updateAppointment(request):
 	file_url = fs.url(file)
 	Appointments.objects.filter(AppointmentID=appointment_id).update(Remarks=request.POST["remark"],AppointmentFee=request.POST["amount"],Document=file_url)
 	return redirect("/doctor/view-app/")
+
+class DoctorPublicProfile(View):
+	template_name = "doctor/doctor_public_profile.html"
+
+	def get(self, *args, **kwargs):
+		# doctor_row = DocProfile.objects.get(UserID = kwargs['userid'])
+		doctor_row = DocProfile.objects.get(UserID = 25)
+		context={
+			"doctor_details":doctor_row}
+		return(TemplateResponse(self.request, self.template_name, context))
+
+class GetDoctorListing(View):
+	def get(self, *args, **kwargs):
+		filterQuery = {}
+		context = {
+			'locations': Location.objects.all(),
+			'specializations': Specialization.objects.all()
+		}
+
+		if 'location' in self.request.GET:
+			filterQuery['location'] = self.request.GET['location']
+		if 'gender' in self.request.GET:
+			filterQuery['gender'] = self.request.GET['gender']
+		if 'specs' in self.request.GET:
+			filterQuery['specialization'] = self.request.GET['specs']
+
+		context['doctor_list'] = DocProfile.objects.filter(**filterQuery)
+		
+		return render(self.request, "doctor/doctor-list.html", context)
+

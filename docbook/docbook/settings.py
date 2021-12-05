@@ -28,6 +28,7 @@ DEBUG = True
 APPEND_SLASH=False
 ALLOWED_HOSTS = ['*']
 
+LOGIN_URL = "/account/login/"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
