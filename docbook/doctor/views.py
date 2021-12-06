@@ -47,6 +47,9 @@ class UpdateDoctorView(UpdateView):
 			return context
 		else:
 			messages.error(self.request, "Contact with Admin for registration...")
+			
+	def get_success_url(self):
+		return reverse("doctor:doctor-register",kwargs={'pk':self.request.user.id})
 
 # To view doc profile
 class ProfileView(CreateView):

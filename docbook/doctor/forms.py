@@ -15,23 +15,8 @@ class DocProfileForm(forms.ModelForm):
         ('Female', 'Female'),
 
     )
-    GROUPS_S = (
-        ('','Specialization'),
-        ('Cardiologist', 'Cardiologist'),
-        ('Neurologist', 'Neurologist'),
-        ('Gynaecologist','Gynaecologist')
-    )
-
-    GROUPS_L = (
-        ('','Location'),
-        ('Ontario(ON)', 'Ontario(ON)'),
-        ('Quebec(QC)', 'Quebec(QC)'),
-        ('Alberta(AB)','Alberta(AB)'),
-    )
 
     gender = forms.ChoiceField(required=True, choices = GROUPS)
-    specialization = forms.ChoiceField(required=True, choices = GROUPS_S)
-    location = forms.ChoiceField(required=True, choices = GROUPS_L)
 
     class Meta:
         model = DocProfile
