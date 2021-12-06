@@ -34,7 +34,7 @@
                           <tbody>
                             {% for patient in patients %}
                             <tr>
-                              <form  method="POST" action="{% url 'update-ap' %}" enctype="multipart/form-data">
+                              <form  method="POST" action="{% url 'doctor:update-ap' %}" enctype="multipart/form-data">
                                 {% csrf_token %}
                               <td>
                                 <h2 class="table-avatar">
