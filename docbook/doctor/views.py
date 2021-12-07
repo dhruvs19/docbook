@@ -7,6 +7,13 @@ from django.views.generic.edit import CreateView
 from .forms import *
 from .models import *
 from appointments.models import *
+from io import BytesIO
+import matplotlib.pyplot as plt
+import numpy as np
+import base64
+import matplotlib.ticker as ticker
+from django.db.models import Count
+
 
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import Group
@@ -160,9 +167,9 @@ class DoctorPublicProfile(View):
 	template_name = "doctor/doctor_public_profile.html"
 
 	def get(self, *args, **kwargs):
-		# doctor_row = DocProfile.objects.get(UserID = kwargs['userid'])
-		doctor_row = DocProfile.objects.get(UserID = 25)
+		doctor_row = DocProfile.objects.get(UserID = kwargs['UserID'])
 		context={
+			"doctorGrpah":generateDoctorAppointmentGraph(doctor_row),
 			"doctor_details":doctor_row}
 		return(TemplateResponse(self.request, self.template_name, context))
 
@@ -185,3 +192,28 @@ class GetDoctorListing(View):
 		
 		return render(self.request, "doctor/doctor-list.html", context)
 
+
+def generateDoctorAppointmentGraph(docUser):
+	res = Appointments.objects.filter(DoctorUser = docUser).values('Status').annotate(scount=Count('Status')).order_by('Status')
+	app_count = []
+	sts_list = []
+	for i,c in enumerate(res):
+		app_count.append(c['scount'])
+		sts_list.append(c['Status'])
+
+	x = np.array(sts_list)
+	y = np.array(app_count)
+
+	plt.locator_params(axis="y", integer=True, tight=True)
+
+	plt.bar(x,y, color = '#272b41', width=.5)
+	plt.xlabel("Status")
+	plt.ylabel("Appointments")
+	plt.title("Appointments vs Status")
+
+	buffer = BytesIO()
+	filename = 'media/doctors/graphs/'+ docUser.name +'.png'
+	plt.savefig(filename)
+	b64 = base64.b64encode(buffer.getvalue()).decode()
+	buffer.close()
+	return b64
