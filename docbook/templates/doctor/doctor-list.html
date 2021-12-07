@@ -100,13 +100,13 @@
                             <div class="doctor-widget">
                                 <div class="doc-info-left">
                                     <div class="doctor-img">
-                                        <a href="doctor-profile.html">
+                                        <a href="/doctor/doctor-profile/{{doctor.UserID.id}}/">
                                             <img src="{{ doctor.profile_image.url }}" class="img-fluid"
                                                 alt="User Image">
                                         </a>
                                     </div>
                                     <div class="doc-info-cont">
-                                        <h4 class="doc-name"><a href="doctor-profile.html">{{doctor.name}}
+                                        <h4 class="doc-name"><a href="/doctor/{{doctor.UserID.id}}/">{{doctor.name}}
                                             
                                         </a></h4>
                                         <p class="doc-speciality">{{loc}}</p>
