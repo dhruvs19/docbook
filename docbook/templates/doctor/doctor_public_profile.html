@@ -1,0 +1,32 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <div class="row text-center">
+                
+                <div class="col-md-6 doc-info-cont  mt-5">
+                    <div class="mb-5">
+                        {% if doctor_details.profile_image %}
+                            <img src="{{ doctor_details.profile_image.url }}" style="max-width:200px; border-radius:10px;" alt="User Image">
+                        {% endif %} 
+                    </div>
+                    <h4 class="doc-name">{{ doctor_details.name }}</h4>
+                    <p class="doc-speciality">{{ doctor_details.qualification }}</p>
+                    <p class="doc-department">{{ doctor_details.specialization }}</p>
+                    <div class="clinic-details">
+                        <p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{doctor_details.location}}, Canada <a href="javascript:void(0);">Get Directions</a></p> 
+                    </div>
+                </div>
+                <div class="col-md-6 mt-5">
+                    <h5>Doctor Appointments Statitics</h5>
+                    <div><img src="/media/doctors/graphs/{{ doctor_details.name }}.png" width="60%"></div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
