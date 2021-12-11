@@ -13,8 +13,6 @@ import numpy as np
 import base64
 import matplotlib.ticker as ticker
 from django.db.models import Count
-
-
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import Group
 from django.views.generic import View

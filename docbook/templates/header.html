@@ -30,10 +30,14 @@
                 <!-- Dynamically adding the link to user profile based on their roles -->
                 {% if user.is_authenticated %}
                 <li>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'admin:index' %}">My Dashboard</a>
+                    {% endif %}
                     {% ifequal user.groups.all.0.name 'doctor' %}
-                    <a href="{% url 'doctor:profile-view' %}">My Dashboard</a>
-                    {% else %}
-                    <a href="{% url 'patients:dashboard' %}">My Dashboard</a>
+                        <a href="{% url 'doctor:profile-view' %}">My Dashboard</a>
+                    {% endifequal %}
+                    {% ifequal user.groups.all.0.name 'patient' %}
+                        <a href="{% url 'patients:dashboard' %}">My Dashboard</a>
                     {% endifequal %}
                 </li>
                 {% endif %}

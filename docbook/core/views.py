@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.views import View
-from django.shortcuts import redirect, render, reverse
+from django.shortcuts import redirect, render
 from doctor.models import *
 
 class HomepageView(TemplateView):
@@ -16,17 +16,6 @@ class HomepageView(TemplateView):
         context['specializations'] = Specialization.objects.all()
         return context
 
-
-class GetProfileUrl(View):
-    def get(self, *args, **kwargs):
-        if self.request.user.is_superuser:
-            return reverse("admin:home")
-        elif self.request.user.groups.filter(name='doctor').exists():
-            return reverse("doctor:profile-view")
-        elif self.request.user.groups.filter(name='patient').exists():
-            return reverse("patients:dashboard")
-        else:
-            return reverse("core:home")
 
 class AboutPage(TemplateView):
     template_name = "about.html"
