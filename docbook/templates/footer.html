@@ -23,11 +23,11 @@
                     <div class="footer-widget footer-menu">
                         <h2 class="footer-title">Quick Links</h2>
                         <ul>
-                            <li><a href="appointments.html">Search Doctor</a>
+                            <li><a href="{% url 'doctor:doctor-list' %}">All Doctors</a>
                             </li>
-                            <li><a href="login.html">Login</a>
+                            <li><a href="{% url 'authuser:login_url' %}">Login</a>
                             </li>
-                            <li><a href="doctor-register.html">Register</a>
+                            <li><a href="{% url 'authuser:register_url' %}">Register</a>
                             </li>
                         </ul>
                     </div>
