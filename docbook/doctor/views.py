@@ -8,6 +8,8 @@ from .forms import *
 from .models import *
 from appointments.models import *
 from io import BytesIO
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import base64
