@@ -8,8 +8,6 @@ from .forms import *
 from .models import *
 from appointments.models import *
 from io import BytesIO
-import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import base64
@@ -169,9 +167,38 @@ class DoctorPublicProfile(View):
 	def get(self, *args, **kwargs):
 		doctor_row = DocProfile.objects.get(UserID = kwargs['UserID'])
 		context={
-			"doctorGrpah":generateDoctorAppointmentGraph(doctor_row),
+			"isdoctorGrpah":DoctorPublicProfile.generateDoctorAppointmentGraph(doctor_row),
 			"doctor_details":doctor_row}
 		return(TemplateResponse(self.request, self.template_name, context))
+
+	@classmethod
+	def generateDoctorAppointmentGraph(cls, docUser):
+		res = Appointments.objects.filter(DoctorUser = docUser).values('Status').annotate(scount=Count('Status')).order_by('Status')
+		if len(res):
+			app_count = []
+			sts_list = []
+			for i,c in enumerate(res):
+				app_count.append(c['scount'])
+				sts_list.append(c['Status'])
+
+			x = np.array(sts_list)
+			y = np.array(app_count)
+
+			plt.locator_params(axis="y", integer=True, tight=True)
+
+			plt.bar(x,y, color = '#272b41', width=.5)
+			plt.xlabel("Status")
+			plt.ylabel("Appointments")
+			plt.title("Appointments vs Status")
+
+			buffer = BytesIO()
+			filename = 'media/doctors/graphs/'+ docUser.name +'.png'
+			plt.savefig(filename)
+			b64 = base64.b64encode(buffer.getvalue()).decode()
+			buffer.close()
+			return b64
+		else:
+			return 0
 
 class GetDoctorListing(View):
 	def get(self, *args, **kwargs):
@@ -195,25 +222,28 @@ class GetDoctorListing(View):
 
 def generateDoctorAppointmentGraph(docUser):
 	res = Appointments.objects.filter(DoctorUser = docUser).values('Status').annotate(scount=Count('Status')).order_by('Status')
-	app_count = []
-	sts_list = []
-	for i,c in enumerate(res):
-		app_count.append(c['scount'])
-		sts_list.append(c['Status'])
+	if len(res):
+		app_count = []
+		sts_list = []
+		for i,c in enumerate(res):
+			app_count.append(c['scount'])
+			sts_list.append(c['Status'])
 
-	x = np.array(sts_list)
-	y = np.array(app_count)
+		x = np.array(sts_list)
+		y = np.array(app_count)
 
-	plt.locator_params(axis="y", integer=True, tight=True)
+		plt.locator_params(axis="y", integer=True, tight=True)
 
-	plt.bar(x,y, color = '#272b41', width=.5)
-	plt.xlabel("Status")
-	plt.ylabel("Appointments")
-	plt.title("Appointments vs Status")
+		plt.bar(x,y, color = '#272b41', width=.5)
+		plt.xlabel("Status")
+		plt.ylabel("Appointments")
+		plt.title("Appointments vs Status")
 
-	buffer = BytesIO()
-	filename = 'media/doctors/graphs/'+ docUser.name +'.png'
-	plt.savefig(filename)
-	b64 = base64.b64encode(buffer.getvalue()).decode()
-	buffer.close()
-	return b64
+		buffer = BytesIO()
+		filename = 'media/doctors/graphs/'+ docUser.name +'.png'
+		plt.savefig(filename)
+		b64 = base64.b64encode(buffer.getvalue()).decode()
+		buffer.close()
+		return b64
+	else:
+		return 0

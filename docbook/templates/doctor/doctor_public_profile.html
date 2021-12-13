@@ -20,10 +20,12 @@
                         <p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{doctor_details.location}}, Canada <a href="javascript:void(0);">Get Directions</a></p> 
                     </div>
                 </div>
-                <div class="col-md-6 mt-5">
-                    <h5>Doctor Appointments Statitics</h5>
-                    <div><img src="/media/doctors/graphs/{{ doctor_details.name }}.png" width="60%"></div>
-                </div> 
+                {% if isdoctorGrpah != 0 %}         
+                    <div class="col-md-6 mt-5">
+                        <h5>Doctor Appointments Statitics</h5>
+                        <div><img src="/media/doctors/graphs/{{ doctor_details.name }}.png" width="60%"></div>
+                    </div> 
+                {% endif %} 
             </div>
         </div>
     </div>
