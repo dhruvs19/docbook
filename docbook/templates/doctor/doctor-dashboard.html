@@ -47,7 +47,7 @@
 <td>
 <h2 class="table-avatar">
     {% if app.PatientUser.ProfilePicture %}
-<a href="patient-profile.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="{{ app.Patientdoc.ProfilePicture.url }}" ></a>
+<a href="patient-profile.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="{{ app.PatientUser.ProfilePicture.url }}" ></a>
 {% endif %}
 <a href="patient-profile.html">{{ app.PatientUser.FirstName }} {{ app.PatientUser.LastName }}<span>#{{app.AppointmentID}}</span></a>
 </h2>
@@ -61,14 +61,11 @@
 <td class="text-center">${{ app.AppointmentFee }}</td>
 <td class="text-end">
 <div class="table-action">
-<a href="/media/appointment-documents/{{ app.Document }}" class="btn btn-sm bg-info-light" download>
-Download
-</a>
 <a href="/doctor/accept/{{app.AppointmentID}}" class="btn btn-sm bg-success-light">
 <i class="fas fa-check"></i> Accept
 </a>
 <a href="/doctor/delete/{{app.AppointmentID}}" class="btn btn-sm bg-danger-light">
-<i class="fas fa-times"></i> Cancel
+<i class="fas fa-times"></i> Reject
 </a>
 </div>
 </td>

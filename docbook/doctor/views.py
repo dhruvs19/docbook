@@ -12,6 +12,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy as scp
 import base64
 import matplotlib.ticker as ticker
 from django.db.models import Count
@@ -19,7 +20,8 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import Group
 from django.views.generic import View
 from django.template.response import TemplateResponse
-
+from django.db.models import F
+from django.db.models import Avg
 # To render homepage
 class HomeView(ListView):
 	model = DocProfile
@@ -71,6 +73,8 @@ class ProfileView(CreateView):
 			update = "/doctor/update/"+ str(id)
 			user = DocProfile.objects.get(UserID = self.request.user)
 			context = super(ProfileView, self).get_context_data(*args, **kwargs)
+			context['img_graph'] = generateAverageFeeGraph(self.request)
+			context['stats'] = getFeeVariance(self.request)
 			context["grp"] = str(grp)
 			context["doc"] = user
 			context["update"] = update
@@ -135,7 +139,6 @@ class ViewApp(ListView):
 			grp = Group.objects.get(name=self.request.user.groups.get())
 			app = Appointments.objects.filter(DoctorUser=self.request.user.id)
 			context = super(ViewApp, self).get_context_data(*args, **kwargs)
-			print(type(grp))
 			context["doc"] = user
 			context["app"] = app
 			context["grp"] = str(grp)
@@ -217,3 +220,40 @@ def generateDoctorAppointmentGraph(docUser):
 	b64 = base64.b64encode(buffer.getvalue()).decode()
 	buffer.close()
 	return b64
+
+# Matplotlib Graph which shows the average fee 
+# of all the doctors in a bar graph 
+# Author: Dhruv Sharma
+def generateAverageFeeGraph(request):
+	res = Appointments.objects.filter( Status="Accepted"
+		).values( name=F("DoctorUser__UserID__username")
+		).annotate(avg_fee=Avg('AppointmentFee'))
+
+	xarr, yarr = [],[]
+	for r in res:
+		xarr.append(r['name'])
+		yarr.append(r['avg_fee'])
+
+	plt.bar(xarr,yarr, color = '#272b41', width=.5)
+	plt.xlabel("Doctors")
+	plt.ylabel("Average Fees in Dollars $")
+	plt.title("Doctors vs Average Fees Graph")
+	
+	filename = 'media/doctors/graphs/avg_fees_'+ request.user.username +'.png'
+	plt.savefig(filename)
+	return filename
+
+# Using SciPy to generate some data regarding the 
+# Fee taken by the doctor overtime from the users
+# Author: Dhruv Sharma
+def getFeeVariance(request):
+	res = Appointments.objects.filter(DoctorUser__UserID = request.user, Status="Accepted"
+		).values("AppointmentFee")
+	feeArr = np.array([r['AppointmentFee'] for  r in res])
+	stats = {
+		"avg_fee":np.round(feeArr.mean(), 2),
+		"stnd_dev": np.round(feeArr.std(), 2),
+		"max_fee":feeArr.max(),
+		"min_fee":feeArr.min()
+	}
+	return stats

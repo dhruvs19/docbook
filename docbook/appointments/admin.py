@@ -4,5 +4,5 @@ from django.contrib import admin
 from .models import *
 
 class AppointmentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('AppointmentID', 'DoctorUser', 'PatientUser','AppointmentFee','BookingTime' )
 admin.site.register(Appointments, AppointmentAdmin)
