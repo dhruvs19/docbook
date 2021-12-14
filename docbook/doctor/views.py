@@ -199,12 +199,12 @@ class DoctorPublicProfile(View):
     def get(self, *args, **kwargs):
         doctor_row = DocProfile.objects.get(UserID=kwargs['UserID'])
         context = {
-            "doctorGrpah": DoctorPublicProfile.generateDoctorAppointmentGraph(doctor_row),
+            "doctorGrpah": generateDoctorAppointmentGraph(doctor_row),
             "doctor_details": doctor_row}
         return(TemplateResponse(self.request, self.template_name, context))
 
 
-def generateDoctorAppointmentGraph(cls, docUser):
+def generateDoctorAppointmentGraph(docUser):
     res = Appointments.objects.filter(DoctorUser=docUser).values('Status').annotate(scount=Count('Status')).order_by('Status')
     app_count = []
     sts_list = []
