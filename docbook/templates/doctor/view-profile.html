@@ -54,7 +54,7 @@
             </div>
             <div class="row patient-info-row">
               <div class="col-md-3">Bio</div>
-              <div class="col-md-3">{{doc.bio}}</div>
+              <div class="col-md-9">{{doc.bio}}</div>
             </div>
             <div class="row patient-info-row">
               <div class="col-md-3">Contact</div>
@@ -74,6 +74,29 @@
                 <a href="{{update}}"
                   ><button class="btn btn-info">Edit</button></a
                 >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body pt-0">
+            <div class="row patient-info-row">
+              <div class="col-md-12 mb-2 mt-5">
+                <strong>Some Statitics</strong>
+              </div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-12">
+                  <div class="stat">Maximum Fee Taken : <span>${{stats.max_fee}}</span></div>
+                  <div class="stat">Minimum Fee Taken : <span>${{stats.min_fee}}</span></div>
+                  <div class="stat">Average Fee Taken : <span>${{stats.avg_fee}}</span></div>
+                  <div class="stat">Deviation in Fee : <span>${{stats.stnd_dev}}</span></div>
+              </div>
+            </div>
+            <div class="row patient-info-row">
+              <div class="col-md-12">Name
+                <img src="/{{img_graph}}">
               </div>
             </div>
           </div>

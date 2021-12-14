@@ -33,7 +33,4 @@ class DocProfile(models.Model):
 
     def __str__(self):
         return self.UserID.username
-    
-    def get_absolute_url(self):
-	    return reverse('home')
 

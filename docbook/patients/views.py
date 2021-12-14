@@ -77,6 +77,7 @@ class AddToMedicalHistory(View):
     
     def post(self, *args, **kwargs):
         form = DiagnosisForm(self.request.POST, self.request.FILES) 
+        print(form)
         if form.is_valid():
             diagnosis_obj = form.save(commit=False)
             diagnosis_obj.ReportID = create_diagnosis_id()

@@ -28,3 +28,14 @@ span.about_head {
 .footer-col-3 a, .footer-col-3 i, .footer-col-3 p {
     color: #83c5ff;
 }
+.stat {
+    border-bottom: 1px solid #ececec;
+    padding: 10px 0;
+    font-weight: 500;
+}
+.stat span {
+    background: #2d40a9;
+    padding: 2px 10px;
+    border-radius: 3px;
+    color: white;
+}
