@@ -203,25 +203,25 @@ class DoctorPublicProfile(View):
             "doctor_details": doctor_row}
         return(TemplateResponse(self.request, self.template_name, context))
 
-    @classmethod
-    def generateDoctorAppointmentGraph(cls, docUser):
-        res = Appointments.objects.filter(DoctorUser=docUser).values('Status').annotate(scount=Count('Status')).order_by('Status')
-        app_count = []
-        sts_list = []
-        for i, c in enumerate(res):
-            app_count.append(c['scount'])
-            sts_list.append(c['Status'])
 
-        x = np1.array(sts_list)
-        y = np1.array(app_count)
-        plt.clf()
-        plt.locator_params(axis="y", integer=True, tight=True)
-        plt.bar(x, y, color='#272b41', width=.5)
-        plt.xlabel("Status")
-        plt.ylabel("Appointments")
-        plt.title("Appointments vs Status")
-        filename = 'media/doctors/graphs/' + docUser.name + '.png'
-        plt.savefig(filename)
+def generateDoctorAppointmentGraph(cls, docUser):
+    res = Appointments.objects.filter(DoctorUser=docUser).values('Status').annotate(scount=Count('Status')).order_by('Status')
+    app_count = []
+    sts_list = []
+    for i, c in enumerate(res):
+        app_count.append(c['scount'])
+        sts_list.append(c['Status'])
+
+    x = np.array(sts_list)
+    y = np.array(app_count)
+    
+    plt.locator_params(axis="y", integer=True, tight=True)
+    plt.bar(x, y, color='#272b41', width=.5)
+    plt.xlabel("Status")
+    plt.ylabel("Appointments")
+    plt.title("Appointments vs Status")
+    filename = 'media/doctors/graphs/' + docUser.name + '.png'
+    plt.savefig(filename)
        
 class GetDoctorListing(View):
     def get(self, *args, **kwargs):
@@ -255,7 +255,6 @@ def generateAverageFeeGraph(request):
 		xarr.append(r['name'])
 		yarr.append(r['avg_fee'])
   
-  plt.clf()
 	plt.bar(xarr,yarr, color = '#272b41', width=.5)
 	plt.xlabel("Doctors")
 	plt.ylabel("Average Fees in Dollars $")
