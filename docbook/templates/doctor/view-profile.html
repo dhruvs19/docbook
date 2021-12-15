@@ -86,6 +86,7 @@
                 <strong>Some Statitics</strong>
               </div>
             </div>
+            {% if stats %}
             <div class="row patient-info-row">
               <div class="col-md-12">
                   <div class="stat">Maximum Fee Taken : <span>${{stats.max_fee}}</span></div>
@@ -94,6 +95,7 @@
                   <div class="stat">Deviation in Fee : <span>${{stats.stnd_dev}}</span></div>
               </div>
             </div>
+            {% endif %}
             <div class="row patient-info-row">
               <div class="col-md-12">Name
                 <img src="/{{img_graph}}">

@@ -268,13 +268,16 @@ def generateAverageFeeGraph(request):
 # Fee taken by the doctor overtime from the users
 # Author: Dhruv Sharma
 def getFeeVariance(request):
-	res = Appointments.objects.filter(DoctorUser__UserID = request.user, Status="Accepted"
-		).values("AppointmentFee")
-	feeArr = np.array([r['AppointmentFee'] for  r in res])
-	stats = {
-		"avg_fee":np.round(feeArr.mean(), 2),
-		"stnd_dev": np.round(feeArr.std(), 2),
-		"max_fee":feeArr.max(),
-		"min_fee":feeArr.min()
-	}
-	return stats
+    res = Appointments.objects.filter(DoctorUser__UserID = request.user, Status="Accepted").values("AppointmentFee")
+    
+    if res:
+        feeArr = np.array([r['AppointmentFee'] for  r in res])
+        stats = {
+            "avg_fee":np.round(feeArr.mean(), 2),
+            "stnd_dev": np.round(feeArr.std(), 2),
+            "max_fee":feeArr.max(),
+            "min_fee":feeArr.min()
+        }
+        return stats
+    else:
+        return False
