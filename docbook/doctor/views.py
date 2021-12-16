@@ -217,7 +217,7 @@ def generateDoctorAppointmentGraph(docUser):
     y = np.array(app_count)
 
     plt.clf()
-    plt.locator_params(axis="y",integer=True, tight=True)
+    plt.locator_params(axis="y", tight=True)
     plt.bar(x, y, color='#272b41', width=.5)
     plt.xlabel("Status")
     plt.ylabel("Appointments")
@@ -271,7 +271,9 @@ def generateAverageFeeGraph(request):
 # Fee taken by the doctor overtime from the users
 # Author: Dhruv Sharma
 def getFeeVariance(request):
-    res = Appointments.objects.filter(DoctorUser__UserID = request.user, Status="Accepted").values("AppointmentFee")
+    res = Appointments.objects.filter(
+        DoctorUser__UserID = request.user, 
+        Status="Accepted").values("AppointmentFee")
     
     if res:
         feeArr = np.array([r['AppointmentFee'] for  r in res])
