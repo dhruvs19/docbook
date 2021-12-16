@@ -208,14 +208,16 @@ def generateDoctorAppointmentGraph(docUser):
     res = Appointments.objects.filter(DoctorUser=docUser).values('Status').annotate(scount=Count('Status')).order_by('Status')
     app_count = []
     sts_list = []
+
     for i, c in enumerate(res):
         app_count.append(c['scount'])
         sts_list.append(c['Status'])
-
+    
     x = np.array(sts_list)
     y = np.array(app_count)
+
     plt.clf()
-    plt.locator_params(axis="y", tight=True)
+    plt.locator_params(axis="y",integer=True, tight=True)
     plt.bar(x, y, color='#272b41', width=.5)
     plt.xlabel("Status")
     plt.ylabel("Appointments")
