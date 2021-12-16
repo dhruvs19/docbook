@@ -214,8 +214,8 @@ def generateDoctorAppointmentGraph(docUser):
 
     x = np.array(sts_list)
     y = np.array(app_count)
-    
-    plt.locator_params(axis="y", integer=True, tight=True)
+    plt.clf()
+    plt.locator_params(axis="y", tight=True)
     plt.bar(x, y, color='#272b41', width=.5)
     plt.xlabel("Status")
     plt.ylabel("Appointments")
@@ -246,23 +246,24 @@ class GetDoctorListing(View):
 # of all the doctors in a bar graph 
 # Author: Dhruv Sharma
 def generateAverageFeeGraph(request):
-	res = Appointments.objects.filter( Status="Accepted"
+    res = Appointments.objects.filter( Status="Accepted"
 		).values( name=F("DoctorUser__UserID__username")
 		).annotate(avg_fee=Avg('AppointmentFee'))
-
-	xarr, yarr = [],[]
-	for r in res:
-		xarr.append(r['name'])
-		yarr.append(r['avg_fee'])
-  
-	plt.bar(xarr,yarr, color = '#272b41', width=.5)
-	plt.xlabel("Doctors")
-	plt.ylabel("Average Fees in Dollars $")
-	plt.title("Doctors vs Average Fees Graph")
-	
-	filename = 'media/doctors/graphs/avg_fees_'+ request.user.username +'.png'
-	plt.savefig(filename)
-	return filename
+    
+    xarr, yarr = [],[]
+    for r in res:
+        if r['avg_fee']>0:
+            xarr.append(r['name'])
+            yarr.append(r['avg_fee'])
+    plt.clf()
+    plt.bar(xarr,yarr, color = '#272b41', width=.5)
+    plt.xlabel("Doctors")
+    plt.ylabel("Average Fees in Dollars $")
+    plt.title("Doctors vs Average Fees Graph")
+    
+    filename = 'media/doctors/graphs/avg_fees_'+ request.user.username +'.png'
+    plt.savefig(filename)
+    return filename
 
 # Using SciPy to generate some data regarding the 
 # Fee taken by the doctor overtime from the users
