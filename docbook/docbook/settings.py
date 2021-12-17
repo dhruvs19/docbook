@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6yt1rf1@*%v1x#obh$svaehpnk*@n714p8jo^69=2^-wi4h(b0'
+SECRET_KEY = 'removed'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,9 +87,9 @@ DATABASES = {
         'ENGINE': 'djongo',
         'CLIENT': {
                 'name': 'docbook',
-                'host': 'mongodb+srv://docadmin:hRy#a4fPKzF*2Jp@docbook.rftow.mongodb.net/docbook?retryWrites=true&ssl=true&ssl_cert_reqs=CERT_NONE&w=majority',
+                'host': 'mongodburl',
                 'username': 'docadmin',
-                'password': 'hRy#a4fPKzF*2Jp'
+                'password': 'password'
         }
     }
 }
