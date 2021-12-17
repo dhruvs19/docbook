@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      
+          <!-- side bar  -->
+          {% include 'doctor/sidebar.html' %}
+          <!-- side bar ends -->
+      
+      <div class="col-md-7 col-lg-8 col-xl-9">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="mb-4">Patient Appointment</h4>
+            <div class="appointment-tab">
+              
+
+              <div class="tab-content">
+                <div class="tab-pane show active" id="upcoming-appointments">
+                  <div class="card card-table mb-0">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0">
+                          <thead>
+                            <tr>
+                              <th>Patient Name</th>
+                              <th>Appointment Date</th>
+                              <th>Appointment Time</th>
+                              <th>Remarks</th>
+                              <th>Paid Amount</th>
+                              <th>Prescription</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for patient in patients %}
+                            <tr>
+                              <form  method="POST" action="{% url 'doctor:update-ap' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                              <td>
+                                <h2 class="table-avatar">
+                                  <a
+                                    href="patient-profile.html"
+                                    class="avatar avatar-sm me-2"
+                                    ><img
+                                      class="avatar-img rounded-circle"
+                                      src="{{ patient.PatientUser.ProfilePicture.url }}"
+                                  /></a>
+                                  <a href="patient-profile.html">{{patient.PatientUser.FirstName}} {{ patient.PatientUser.LastName }}<span>#{{patient.AppointmentID}}</span></a>
+                                </h2>
+                              </td>
+                              <td>{{ patient.AppointmentDate }}</td>
+                              <td>{{ patient.TimeSlot }}</td>
+                              {% if patient.Remarks == None %}
+                              <td><input type="text" class="form-control" name="remark" placeholder="Add remark..." id="amount" required/></td>
+
+                              <td>
+                                <input type="text" class="form-control" name="amount" placeholder="00.00" id="amount" required/>
+                                <input type="text" class="form-control" name="id" value="{{ patient.AppointmentID }}" id="id" hidden/>
+                              </td>
+                              <td>
+                                <input type="file" class="form-control" name="document" accept=".doc, .png, .doc, .pdf, .jpg, .docx, .txt" id="document" required>
+                              </td>
+                              <td class="text-end">
+                                <div class="table-action">
+                                  <button class="btn btn-sm bg-success-light" type="submit">
+                                    Save
+                                  </button>
+                                </div>
+                              </td>
+                              {% else %}
+                              <td>{{ patient.Remarks }}</td>
+                              <td>${{ patient.AppointmentFee }}</td>
+                              <td><a href={{ patient.Document }} class="btn btn-sm bg-info-light" download>
+                                Download
+                                </a></td>
+                              {% endif %}
+                              
+                            </form>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

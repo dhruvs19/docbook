@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="breadcrumb-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-12 col-12">
+                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="">Dashboard</a></li>
+                    </ol>
+                </nav>
+                <h2 class="breadcrumb-title">Dashboard</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- side bar  -->
+            {% include 'patients/side_bar.html' %}
+            <!-- side bar ends -->
+
+            
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <!-- personal information -->
+                <div class="card">
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-md-12 mt-5">
+                                <h3>Welcome {{patient_details.FirstName}} {{patient_details.LastName}}</h3> 
+                            </div>
+                        </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-12 mb-2 mt-5"><strong>Personal Information</strong></div>
+                        </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-3">First Name</div>
+                            <div class="col-md-3">{{patient_details.FirstName}}</div>
+                        </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-3">Last Name</div>
+                            <div class="col-md-3">{{patient_details.LastName}}</div>
+                        </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-3">Date of Birth</div>
+                            <div class="col-md-3">{{patient_details.DOB}}</div>
+                        </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-3">Address</div>
+                            <div class="col-md-3">{{patient_details.Address}}</div>
+                        </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-3">Contact</div>
+                            <div class="col-md-3">{{patient_details.PhoneNumber}}</div>
+                        </div>
+                        <div class="row patient-info-row">
+                            <div class="col-md-3">Blood Group</div>
+                            <div class="col-md-3">{{patient_details.BloodGroup}}</div>
+                        </div>
+                        <div class="row patient-info-row ">
+                            <div class="col-md-12 text-center">
+                                <a href="/patients/profile-settings/"><button class="btn btn-info"><span class="white-text">Edit Profile</span></button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- personal information end-->
+
+                <!-- table begins -->
+                
+                <div class="card">
+                    <div class="card-head">
+                        <h4>Appointments</h4>
+                    </div>
+                    <div class="card-body">                    
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                    <th>Doctor</th>
+                                    <th>Appointment Date</th>
+                                    <th>Appointment Time</th>
+                                    <th>Amount</th>
+                                    <th>Remarks</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment in patient_appointments%}
+                                        <tr>
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <!-- <a href="doctor-profile.html" class="avatar avatar-sm me-2">
+                                                    <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+                                                    </a>
+                                                    <a href="doctor-profile.html">Dr. Ruby Perrin <span>Dental</span></a> -->
+                                                    {{appointment.DoctorUser.name}}
+                                                </h2>
+                                            </td>
+                                            <td>{{appointment.AppointmentDate}}</td>
+                                            <td>{{appointment.TimeSlot}}</td>
+                                            <td>$ {{appointment.AppointmentFee}}</td>
+                                            <td>{{appointment.Remarks}}</td>
+                                            <td>
+                                                <span class="badge rounded-pill {% if appointment.Status == 'Pending' %}bg-warning-light {% elif appointment.Status == 'Accepted' %} bg-success-light{% elif appointment.Status == 'Cancelled' %} bg-secondary {% else %} bg-danger-light{% endif %}">
+                                                    {{appointment.Status}}
+                                                </span>
+                                            </td>
+                                            
+                                            <td class="text-end">
+                                                <a href="/appointments/appointment-details/{{ appointment.AppointmentID}}/"><i class="fas fa-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- table ends -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

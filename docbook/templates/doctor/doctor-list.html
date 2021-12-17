@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="breadcrumb-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-12">
+                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Search</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
+
+                <div class="card search-filter">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">Search Filter</h4>
+                    </div>
+                    <form method="get">
+                        <div class="card-body">
+                            <div class="filter-widget">
+                                <h4>Location</h4>
+                                {% for loc in locations %}
+                                
+                                    <div>
+                                        <label class="custom_check">
+                                            <input type="radio" name="location" value="{{loc}}"
+                                            {% ifequal request.GET.location loc.location %}
+                                                checked
+                                            {% endifequal %}
+                                            >
+                                            <span class="checkmark"></span> {{loc}}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="filter-widget">
+                                <h4>Gender</h4>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="gender" value="Male"
+                                        {% ifequal request.GET.gender "Male" %}
+                                                checked
+                                            {% endifequal %}
+                                        >
+                                        <span class="checkmark"></span> Male Doctor
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="gender_type" value="Female"
+                                        {% ifequal request.GET.gender "Female" %}
+                                            checked
+                                        {% endifequal %}
+                                        >
+                                        <span class="checkmark"></span> Female Doctor
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="filter-widget">
+                                <h4>Select Specialist</h4>
+                                {% for spec in specializations %}
+                                    <div>
+                                        <label class="custom_check">
+                                            <input type="radio" name="specs" value="{{spec}}"
+                                            {% ifequal request.GET.specs spec.specialization %}
+                                                checked
+                                            {% endifequal %}>
+                                            <span class="checkmark"></span> {{spec}}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="btn-search">
+                                <button type="submit" class="btn w-100">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-9">
+                
+                {% for doctor in doctor_list %}
+                    {% if doctor.UserID.is_active %}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <a href="/doctor/doctor-profile/{{doctor.UserID.id}}/">
+                                            <img src="{{ doctor.profile_image.url }}" class="img-fluid"
+                                                alt="User Image">
+                                        </a>
+                                    </div>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name"><a href="/doctor/doctor-profile/{{doctor.UserID.id}}/">{{doctor.name}}
+                                            
+                                        </a></h4>
+                                        <p class="doc-speciality">{{loc}}</p>
+                                        <h5 class="doc-department"><img
+                                                src="{% static 'img/specialities/' %}{{doctor.specialization}}.png" class="img-fluid"
+                                                alt="Speciality">{{doctor.specialization}}</h5>
+                                    
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{doctor.location}},
+                                                Canada</p>
+                                        </div>
+                                        <div class="clinic-services">
+                                            <span class="about_head">About:</span>
+                                            <div class="about_content">{{doctor.bio}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <li><i class="fas fa-mobile-alt"></i> {{doctor.mobile}}</li>
+                                            <li><i class="fas fa-file-contract"></i> {{doctor.qualification}} </li>
+                                            <li><i class="fas fa-map-marker-alt"></i> {{doctor.reg_clinic_address}} - {{doctor.pincode}} </li>
+                                        </ul>
+                                    </div>
+                                    <div class="clinic-booking">
+                                        <!-- <a class="view-pro-btn" href="doctor-profile.html">View Profile</a> -->
+                                        <a class="apt-btn" href="{% url 'appointments:book' %}?doc={{doctor.UserID.id}}">Book Appointment</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

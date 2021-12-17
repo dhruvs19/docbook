@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="breadcrumb-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-12 col-12">
+                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="">Appointment Details</a></li>
+                    </ol>
+                </nav>
+                <h2 class="breadcrumb-title">Appointment Details</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- side bar  -->
+            {% include 'appointments/sidebar.html' %}
+            <!-- side bar ends -->
+            
+            <!-- content begins -->
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="card">
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-md-12 mb-2 mt-5"><strong>Appointment Details</strong></div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Appointment Number</div>
+                            <div class="col-md-3">{{appointment_details.AppointmentID}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Doctor Name</div>
+                            <div class="col-md-3">{{appointment_details.DoctorUser}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Appointment Date</div>
+                            <div class="col-md-3">{{appointment_details.AppointmentDate}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Appointment Time</div>
+                            <div class="col-md-3">{{appointment_details.TimeSlot}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Clinic Address</div>
+                            <div class="col-md-3">{{clinic_address}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Status</div>
+                            <div class="col-md-3 rounded-pill {% if appointment_details.Status == 'Pending' %}bg-warning-light {% elif appointment_details.Status == 'Accepted' %} bg-success-light{% elif appointment_details.Status == 'Cancelled' %} bg-secondary {% else %} bg-danger-light{% endif %}">{{appointment_details.Status}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Doctors Remarks</div>
+                            <div class="col-md-3">{{appointment_details.Remarks}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Fee</div>
+                            <div class="col-md-3">$ {{appointment_details.AppointmentFee}}</div>
+                        </div>
+                        <div class="row appointment-info-row">
+                            <div class="col-md-3">Records/ Documents</div>
+                            <div class="col-md-3">{{appointment_details.Document}}</div>
+                        </div>
+                        {% if appointment_details.Status == 'Pending' or appointment_details.Status == 'Accepted' %}
+                            <div class="row appointment-info-row mt-4">
+                                <div class="col-md-5 align-items-right appointments-link book" ><a href="/appointments/cancel-appointment/{{ appointment_details.AppointmentID }}/"><button class="btn btn-warning">Cancel Appointment</button></a></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- content ends -->
+            
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

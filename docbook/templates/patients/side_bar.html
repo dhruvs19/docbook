@@ -1,0 +1,55 @@
+<!-- side bar  -->
+<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+    <div class="profile-sidebar">
+        <div class="widget-profile pro-widget-content">
+            <div class="profile-info-widget">
+                <a href="#" class="booking-doc-img">
+                    <img src="/media/{{patient_details.ProfilePicture}}" alt="User Image">
+                </a>
+                <div class="profile-det-info">
+                    <h3>{{patient_details.FirstName}} {{patient_details.LastName}}</h3>
+                    <div class="patient-details">
+                        <h5><i class="fas fa-birthday-cake"></i> {{patient_details.DOB}}, {{patient_age}} years</h5> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-widget">
+            <nav class="dashboard-menu">
+                <ul>
+                    <li>
+                        <a href="/patients/patient-dashboard/">
+                            <i class="fas fa-columns"></i>
+                            <span>Patient Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/appointments/book-appointment/">
+                            <i class="fas fa-hourglass-start"></i>
+                            <span>Book Appointment</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/appointments/view-appointment/">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>View Appointment</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/patients/profile-settings/">
+                            <i class="fas fa-user-cog"></i>
+                            <span>Profile Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/patients/medical-records/">
+                            <i class="fas fa-file-medical-alt"></i>
+                            <span>Medical Records</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- side bar ends -->

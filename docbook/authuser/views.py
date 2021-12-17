@@ -1,4 +1,5 @@
 from django import forms
+from django.http import request
 from .forms import NewUserForm
 from django.contrib import messages
 from doctor.models import DocProfile
@@ -23,20 +24,29 @@ class CustomLoginForm(AuthenticationForm):
             before activating it. Thanks!"
         if username is not None and password:
             self.user_cache = authenticate(self.request, username=username, password=password)
+
+            # user not authenticated
             if self.user_cache is None:
                 try:
                     user_temp = User.objects.get(username=username)
-                except:
+                except Exception as e:
                     user_temp = None
-
-                if user_temp is not None:
-                        self.confirm_login_allowed(user_temp)
-                else:
-                    raise forms.ValidationError(
-                        self.error_messages['invalid_login'],
-                        code='invalid_login',
-                        params={'username': self.username_field.verbose_name},
-                    )
+                
+                # found user with the username and password
+                if user_temp is not None and user_temp.check_password(password):
+                    # if user is not active raise error
+                    if not user_temp.is_active:
+                        raise forms.ValidationError(
+                            self.error_messages['inactive'],
+                            code='inactive',
+                            params={'username': self.username_field.verbose_name},
+                        )
+                # raise error for invalid login        
+                raise forms.ValidationError(
+                    self.error_messages['invalid_login'],
+                    code='invalid_login',
+                    params={'username': self.username_field.verbose_name},
+                )
 
         return self.cleaned_data
 
@@ -46,13 +56,16 @@ class LoginPage(LoginView):
 
     # redirect after logging in as per the user role
     def get_success_url(self):
-        user = self.request.user
-        if user.is_authenticated:
-            if user.is_superuser: return reverse("admin:index")
-            elif user.groups.filter(name='doctor').exists(): 
-                return reverse("doctor:doctor-register")
-            elif user.groups.filter(name='patient').exists():
-                return reverse("patients:profile_settings_url")
+        if 'next' not in self.request.GET:
+            user = self.request.user
+            if user.is_authenticated:
+                if user.is_superuser: return reverse("admin:index")
+                elif user.groups.filter(name='doctor').exists(): 
+                   return reverse("doctor:home")
+                elif user.groups.filter(name='patient').exists():
+                     return reverse("patients:dashboard")
+        else:
+            return self.request.GET['next']
         return super().get_success_url()
 
 class RegisterPage(View):

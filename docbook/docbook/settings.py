@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +28,7 @@ DEBUG = True
 APPEND_SLASH=False
 ALLOWED_HOSTS = ['*']
 
+LOGIN_URL = "/account/login/"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -42,7 +44,8 @@ INSTALLED_APPS = [
     'core',
     'authuser',
     'doctor',
-    'patients'
+    'patients',
+    'appointments'
 ]
 
 MIDDLEWARE = [
@@ -90,7 +93,6 @@ DATABASES = {
         }
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
