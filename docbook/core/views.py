@@ -33,9 +33,8 @@ def doctorSpecializationLocation():
 
     labels = np.array(spec_count)
     sizes = np.array(doc_list)
-    explode = (0, 0, 0, 0) 
     plt1.clf()
-    plt1.pie(sizes, explode=explode, labels=labels,shadow=True, startangle=90, autopct='%1.1f%%')
+    plt1.pie(sizes, labels=labels,shadow=True, startangle=90, autopct='%1.1f%%')
     plt1.title("Doctors Distribution")
     docfilename = 'media/doctors/specialization_graph/' + 'doctorspecialization' + '.png'
     plt1.savefig(docfilename)
